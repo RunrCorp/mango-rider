@@ -1,0 +1,223 @@
+//import 'package:camera/camera.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:mango/code/location.dart';
+import 'package:mango/screens/order_history.dart';
+import 'package:mango/screens/settings.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
+
+class HomePage extends StatefulWidget {
+//  final List<CameraDescription> cameras;
+//  HomePage({this.cameras});
+
+  final FirebaseUser _user;
+
+  HomePage(this._user);
+
+  @override
+  _HomePageState createState() => new _HomePageState(_user);
+}
+
+class _HomePageState extends State<HomePage>
+    with SingleTickerProviderStateMixin {
+  GoogleMapController mapController;
+
+  final LatLng _center = const LatLng(40.902732, -74.033893);
+  final FirebaseUser _user;
+
+  _HomePageState(this._user);
+
+  void _onMapCreated(GoogleMapController controller) {
+    mapController = controller;
+  }
+
+  String currentProfilePicture = "";
+
+  String otherProfilePicture =
+      "http://www.jacklee.us/static/media/potato.7dedc136.png";
+
+  void editPicture() {
+    print("Tapped here to edit picture!");
+    String temp = currentProfilePicture;
+    setState(() {
+      currentProfilePicture = otherProfilePicture;
+      otherProfilePicture = temp;
+    });
+  }
+
+  Widget _buildSuggestions() {
+    List<Location> locations = _getRecentLocations();
+    return new ListView.builder(
+        itemCount: locations.length,
+        itemBuilder: (context, index) {
+          return Card(
+            elevation: 1,
+            child: ListTile(
+              contentPadding: const EdgeInsets.all(3),
+              title: Text(locations[index].streetAddress),
+              subtitle: Text(
+                locations[index].city +
+                    ", " +
+                    locations[index].state +
+                    "\n" +
+                    locations[index].zipCode,
+                maxLines: 3,
+              ),
+            ),
+          );
+        });
+  }
+
+  List<Location> _getRecentLocations() {
+    print("Getting recent locations");
+    return [
+      new Location(
+          streetAddress: "546 Brook Ave",
+          city: "River Vale",
+          state: "New Jersey",
+          zipCode: "07675"),
+      new Location(
+          streetAddress: "74 Stratford Rd",
+          city: "Dumont",
+          state: "NJ",
+          zipCode: "00000"),
+      new Location(
+          streetAddress: "I forgot you ",
+          city: "address",
+          state: "Alec",
+          zipCode: "0000"),
+    ];
+  }
+
+  PanelController _panelController = new PanelController();
+  TextEditingController _textEditingController = new TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    BorderRadiusGeometry radius = BorderRadius.only(
+      topLeft: Radius.circular(24.0),
+      topRight: Radius.circular(24.0),
+    );
+    return Scaffold(
+      floatingActionButton: new Builder(builder: (context) {
+        return new Container(
+            margin: const EdgeInsets.only(top: 150.0),
+            child: new FloatingActionButton(
+              onPressed: () {
+                Scaffold.of(context).openEndDrawer();
+              },
+              child: const Icon(Icons.menu),
+              backgroundColor: Colors.white,
+              foregroundColor: Theme.of(context).primaryColor,
+            ));
+      }),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
+      endDrawer: new Drawer(
+        child: new ListView(
+          children: <Widget>[
+            new UserAccountsDrawerHeader(
+              accountName: new Text(_user.displayName),
+              accountEmail: new Text(_user.email),
+              currentAccountPicture: new GestureDetector(
+                onTap: editPicture,
+                child: new CircleAvatar(
+                  backgroundImage: new NetworkImage(_user.photoUrl),
+                ),
+              ),
+              decoration: new BoxDecoration(
+                color: Theme.of(context).primaryColor,
+              ),
+            ),
+            new ListTile(
+                title: new Text("Past Deliveries"),
+                trailing: new Icon(Icons.timelapse),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).push(new MaterialPageRoute(
+                      builder: (BuildContext context) =>
+                          new OrderHistoryPage()));
+                }),
+            new ListTile(
+                title: new Text("Settings"),
+                trailing: new Icon(Icons.settings),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).push(new MaterialPageRoute(
+                      builder: (BuildContext context) => new SettingsPage()));
+                }),
+            new Divider(),
+            new ListTile(
+              title: new Text("Close"),
+              trailing: new Icon(Icons.cancel),
+              onTap: () => Navigator.of(context).pop(),
+            ),
+          ],
+        ),
+      ),
+      body: SlidingUpPanel(
+        controller: _panelController,
+        minHeight: 80,
+        maxHeight: 400,
+
+        //header: new Container(
+        //color: Colors.black,
+        //  child: new TextField(),
+        //),
+        panel: Container(
+          padding: const EdgeInsets.all(20),
+          child: Column(children: <Widget>[
+            Container(
+              height: 45,
+              child: TextField(
+                controller: _textEditingController,
+                onTap: () => _panelController.open(),
+                decoration: InputDecoration(
+                    contentPadding: EdgeInsets.only(left: 10.0),
+                    icon: new Icon(Icons.navigation),
+                    border: OutlineInputBorder(
+                      borderRadius: const BorderRadius.all(
+                        const Radius.circular(24),
+                      ),
+                    ),
+                    fillColor: Colors.grey,
+                    filled: true,
+                    //ic
+
+                    hintText: "Where to?",
+                    hintStyle: TextStyle(
+                      color: Colors.black,
+                    )),
+              ),
+            ),
+            Flexible(
+              child: _buildSuggestions(),
+            ),
+          ]),
+        ),
+//        collapsed: Container(
+//          child: Center(r
+//            child: Text(
+//              "Hey ${_user.displayName}!",
+//              style: TextStyle(fontSize: 30),
+//            ),
+//          ),
+//        ),
+        body: GoogleMap(
+          onTap: (_) {
+            print("Closing panel");
+            FocusScope.of(context).unfocus();
+            _panelController.close();
+          },
+          onMapCreated: _onMapCreated,
+          initialCameraPosition: CameraPosition(
+            target: _center,
+            zoom: 11.0,
+          ),
+        ),
+        borderRadius: radius,
+      ),
+    );
+  }
+}

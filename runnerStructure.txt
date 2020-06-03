@@ -1,0 +1,13 @@
+App Structure:
+    Main Screen:
+    - Map Widget \/
+    - Search Widget W/ Recents
+    - Driver/Customer Button (?)
+    - Settings Widget:
+        - Profile
+        - Driver/Customer Button (?)
+        - Payment Options
+        - Past Deliveries List
+        - Settings
+        - Help
+        - Legal Section
