@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+
 import 'runner_home.dart';
 
 //Sign-in-----------------------------------------------------------------------------------
@@ -11,7 +12,7 @@ final GoogleSignIn googleSignIn = GoogleSignIn();
 Future<FirebaseUser> signInWithGoogle() async {
   final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
   final GoogleSignInAuthentication googleSignInAuthentication =
-  await googleSignInAccount.authentication;
+      await googleSignInAccount.authentication;
 
   final AuthCredential credential = GoogleAuthProvider.getCredential(
     accessToken: googleSignInAuthentication.accessToken,
@@ -26,7 +27,7 @@ Future<FirebaseUser> signInWithGoogle() async {
   return user;
 }
 
-void signOutGoogle() async{
+void signOutGoogle() async {
   await googleSignIn.signOut();
 
   print("User Sign Out");
@@ -40,7 +41,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-
   @override
   Widget build(BuildContext context) {
     final ScreenWidth = MediaQuery.of(context).size.width;
@@ -50,32 +50,29 @@ class _LoginPageState extends State<LoginPage> {
         color: new Color(0xffe23149),
         child: Center(
           child: Column(
-             mainAxisSize: MainAxisSize.max,
+            mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[ 
-              SizedBox(height:100),
+            children: <Widget>[
+              SizedBox(height: ScreenHeight * 1 / 6.7),
               Image.asset(
-                "assets/runr.png",  
-                height: 3/4 * ScreenWidth,
-                width: 3/4 * ScreenWidth,
-                
+                "assets/runr.png",
+                height: 3 / 4 * ScreenWidth,
+                width: 3 / 4 * ScreenWidth,
               ),
-              SizedBox(height: 100),
+              SizedBox(height: ScreenHeight * 1 / 10),
               _signInButton(),
               SizedBox(height: 20),
-              Text(
-                "Forgot Password?",
-                style: TextStyle(
-                  color: Colors.white
-                )
-              ),
-              SizedBox(height: 250),
-              Text(
-                "Runr © LLC 2020",
-                style: TextStyle(
-                  color: Colors.white
-                )
-              )
+              Text("Forgot Password?", style: TextStyle(color: Colors.white)),
+              SizedBox(
+                  height: ScreenHeight -
+                      (ScreenHeight * 1 / 6.7 +
+                          3 / 4 * ScreenWidth +
+                          ScreenHeight * 1 / 10 +
+                          35 +
+                          15 +
+                          20 +
+                          40)),
+              Text("Runr © LLC 2020", style: TextStyle(color: Colors.white))
             ],
           ),
         ),
