@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "423335283643",
+    "firebase_url": "https://mango-47065.firebaseio.com",
+    "project_id": "mango-47065",
+    "storage_bucket": "mango-47065.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:423335283643:android:76686d8041d0407778d29e",
+        "android_client_info": {
+          "package_name": "com.example.mango"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "423335283643-cn761pjd4k9t4mg41q8ojt3b71cu18mu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCVUGGw83we9CX7WaTluKqgNnSPwJauWrU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "423335283643-cn761pjd4k9t4mg41q8ojt3b71cu18mu.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "423335283643-2n76nt5u3tv3c7ddeg5pfgrvf70ckfgo.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "dev.ionita.mango"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
