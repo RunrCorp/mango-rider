@@ -149,7 +149,7 @@ class _HomePageState extends State<HomePage>
                 }),
             new ListTile(
                 title: new Text("Current Offers"),
-                trailing: new Icon(Icons.timelapse),
+                trailing: new Icon(Icons.inbox),
                 onTap: () {
                   //Navigator.of(context).pop();
                   Navigator.of(context).push(new MaterialPageRoute(
