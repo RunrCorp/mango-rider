@@ -66,8 +66,16 @@ flutter:
   #   - images/a_dot_ham.jpeg
   assets:
     - assets/runr.png
-    
-  # An image asset can refer to one or more resolution-specific "variants", see
+    - assets/mango.png
+    - assets/missingmango.png
+    - assets/baggins.png
+    - assets/elf.png
+    - assets/marley.png
+    - assets/runr.png
+    - assets/google_logo.png
+
+
+        # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 
   # For details regarding adding assets from package dependencies, see
