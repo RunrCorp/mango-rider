@@ -26,8 +26,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
   GoogleMapController mapController;
-  GoogleMapsPlaces _places =
-      GoogleMapsPlaces(apiKey: "AIzaSyA7OoEiQjyJd35kPT1NWR8WpvbJS-FpdC8");
+  GoogleMapsPlaces _places = GoogleMapsPlaces(apiKey: "AIzaSyA7OoEiQjyJd35kPT1NWR8WpvbJS-FpdC8");
 
   final LatLng _center = const LatLng(40.902732, -74.033893);
   final FirebaseUser _user;

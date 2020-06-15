@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:mango/screens/current_offers.dart';
 import 'package:mango/screens/login_page.dart';
 
 //List<CameraDescription> cameras;
