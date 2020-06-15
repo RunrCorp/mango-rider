@@ -82,7 +82,8 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _signInButton() {
     return RaisedButton(
-      splashColor: Colors.grey,
+      color: Colors.lightBlue,
+      splashColor: Colors.lightBlue,
       onPressed: () {
         signInWithGoogle().then((FirebaseUser user) {
           Navigator.of(context).push(

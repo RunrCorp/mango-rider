@@ -7,9 +7,12 @@ import 'package:geocoder/geocoder.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_webservice/places.dart';
 import 'package:mango/code/location.dart';
+import 'package:mango/screens/confirm_ride.dart';
 import 'package:mango/screens/order_history.dart';
 import 'package:mango/screens/settings.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
+
+import 'current_offers.dart';
 
 class HomePage extends StatefulWidget {
 //  final List<CameraDescription> cameras;
@@ -26,7 +29,8 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
   GoogleMapController mapController;
-  GoogleMapsPlaces _places = GoogleMapsPlaces(apiKey: "AIzaSyA7OoEiQjyJd35kPT1NWR8WpvbJS-FpdC8");
+  GoogleMapsPlaces _places =
+      GoogleMapsPlaces(apiKey: "AIzaSyA7OoEiQjyJd35kPT1NWR8WpvbJS-FpdC8");
 
   final LatLng _center = const LatLng(40.902732, -74.033893);
   final FirebaseUser _user;
@@ -144,6 +148,14 @@ class _HomePageState extends State<HomePage>
                           new OrderHistoryPage()));
                 }),
             new ListTile(
+                title: new Text("Current Offers"),
+                trailing: new Icon(Icons.timelapse),
+                onTap: () {
+                  //Navigator.of(context).pop();
+                  Navigator.of(context).push(new MaterialPageRoute(
+                      builder: (BuildContext context) => new OffersPage()));
+                }),
+            new ListTile(
                 title: new Text("Settings"),
                 trailing: new Icon(Icons.settings),
                 onTap: () {
@@ -251,6 +263,8 @@ class _HomePageState extends State<HomePage>
       double lng = detail.result.geometry.location.lng;
 
       var address = await Geocoder.local.findAddressesFromQuery(p.description);
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => ConfirmRidePage(lat, lng)));
       print(address);
       print("\n\n\\nn\n\n\n\n\n\n\n\n\n\n\n\n\n");
       print(lat);
