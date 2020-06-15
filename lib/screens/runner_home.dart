@@ -2,7 +2,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_google_places/flutter_google_places.dart';
+import 'package:geocoder/geocoder.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:google_maps_webservice/places.dart';
 import 'package:mango/code/location.dart';
 import 'package:mango/screens/order_history.dart';
 import 'package:mango/screens/settings.dart';
@@ -23,6 +26,8 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
   GoogleMapController mapController;
+  GoogleMapsPlaces _places =
+      GoogleMapsPlaces(apiKey: "AIzaSyA7OoEiQjyJd35kPT1NWR8WpvbJS-FpdC8");
 
   final LatLng _center = const LatLng(40.902732, -74.033893);
   final FirebaseUser _user;
@@ -48,7 +53,7 @@ class _HomePageState extends State<HomePage>
   }
 
   Widget _buildSuggestions() {
-    List<Location> locations = _getRecentLocations();
+    List<RunnerLocation> locations = _getRecentLocations();
     return new ListView.builder(
         itemCount: locations.length,
         itemBuilder: (context, index) {
@@ -70,20 +75,20 @@ class _HomePageState extends State<HomePage>
         });
   }
 
-  List<Location> _getRecentLocations() {
+  List<RunnerLocation> _getRecentLocations() {
     print("Getting recent locations");
     return [
-      new Location(
+      new RunnerLocation(
           streetAddress: "546 Brook Ave",
           city: "River Vale",
           state: "New Jersey",
           zipCode: "07675"),
-      new Location(
+      new RunnerLocation(
           streetAddress: "74 Stratford Rd",
           city: "Dumont",
           state: "NJ",
           zipCode: "00000"),
-      new Location(
+      new RunnerLocation(
           streetAddress: "I forgot you ",
           city: "address",
           state: "Alec",
@@ -172,7 +177,22 @@ class _HomePageState extends State<HomePage>
               height: 45,
               child: TextField(
                 controller: _textEditingController,
-                onTap: () => _panelController.open(),
+                onTap: () async {
+                  _panelController.open();
+                  print("on tap function entered");
+                  // show input autocomplete with selected mode
+                  // then get the Prediction selected
+                  //AIzaSyAv3aGyislLlmnTLeL0O_ub-2IqilWke9Q
+                  Prediction p = await PlacesAutocomplete.show(
+                    context: context,
+                    apiKey: "AIzaSyA7OoEiQjyJd35kPT1NWR8WpvbJS-FpdC8",
+                    radius: 10000000,
+                    onError: (response) => print(response.errorMessage),
+                  );
+                  print(
+                      "Prediction has been received, now displaying prediction");
+                  displayPrediction(p);
+                },
                 decoration: InputDecoration(
                     contentPadding: EdgeInsets.only(left: 10.0),
                     icon: new Icon(Icons.navigation),
@@ -219,5 +239,23 @@ class _HomePageState extends State<HomePage>
         borderRadius: radius,
       ),
     );
+  }
+
+  Future<Null> displayPrediction(Prediction p) async {
+    print("Displaying Prediction");
+    if (p != null) {
+      PlacesDetailsResponse detail =
+          await _places.getDetailsByPlaceId(p.placeId);
+
+      var placeId = p.placeId;
+      double lat = detail.result.geometry.location.lat;
+      double lng = detail.result.geometry.location.lng;
+
+      var address = await Geocoder.local.findAddressesFromQuery(p.description);
+      print(address);
+      print("\n\n\\nn\n\n\n\n\n\n\n\n\n\n\n\n\n");
+      print(lat);
+      print(lng);
+    }
   }
 }
