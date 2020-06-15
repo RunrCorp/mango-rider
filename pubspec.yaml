@@ -29,6 +29,9 @@ dependencies:
   google_maps_flutter: ^0.5.11
   # camera: ^0.5.5 
   sliding_up_panel: ^1.0.2
+  flutter_google_places: ^0.1.4
+  geocoder: ^0.2.1
+  flutter_polyline_points: ^0.1.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -63,8 +66,16 @@ flutter:
   #   - images/a_dot_ham.jpeg
   assets:
     - assets/runr.png
-    
-  # An image asset can refer to one or more resolution-specific "variants", see
+    - assets/mango.png
+    - assets/missingmango.png
+    - assets/baggins.png
+    - assets/elf.png
+    - assets/marley.png
+    - assets/runr.png
+    - assets/google_logo.png
+
+
+        # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 
   # For details regarding adding assets from package dependencies, see
