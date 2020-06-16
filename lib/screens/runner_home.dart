@@ -169,7 +169,8 @@ class _HomePageState extends State<HomePage>
                 trailing: Badge(
                   child: Icon(Icons.inbox),
                   badgeColor: Colors.red,
-                  badgeContent: Text("3"),
+                  badgeContent:
+                      Text("3", style: TextStyle(color: Colors.white)),
                   elevation: 2,
                   shape: BadgeShape.circle,
                   position: BadgePosition.topRight(),
