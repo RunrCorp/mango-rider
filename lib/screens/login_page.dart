@@ -82,7 +82,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _signInButton() {
     return RaisedButton(
-      color: Colors.lightBlue,
+      color: Colors.white,
       splashColor: Colors.lightBlue,
       onPressed: () {
         signInWithGoogle().then((FirebaseUser user) {
@@ -110,7 +110,7 @@ class _LoginPageState extends State<LoginPage> {
                 'Sign in with Google',
                 style: TextStyle(
                   fontSize: 20,
-                  color: Colors.white,
+                  color: Colors.black,
                 ),
               ),
             )
