@@ -1,10 +1,10 @@
+//buttons adapted from: https://api.flutter.dev/flutter/material/RaisedButton-class.html
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 class OffersPage extends StatefulWidget{
-
-
 
   @override
   _OffersPageState createState() => _OffersPageState();
@@ -16,34 +16,28 @@ class _OffersPageState extends State<OffersPage> {
     final ScreenWidth = MediaQuery.of(context).size.width;
     final ScreenHeight = MediaQuery.of(context).size.height;
 
-    offerClass d1 = new offerClass("bilbo baggins", Image.asset("assets/baggins.png"), 3, "\$3.45");
-    offerClass d2 = new offerClass("Bob Marley", Image.asset("assets/marley.png"), 5, "\$4.20");
-    offerClass d3 = new offerClass("uuuuuuuuuuuuuu", Image.asset("assets/elf.png"), 2, "\$109.22");
+    offerClass d1 = new offerClass("Bilbo", Image.asset("assets/bagginso.png"), 3, "\$3.45");
+    offerClass d2 = new offerClass("Robert", Image.asset("assets/marlo.png"), 5, "\$4.20");
+    offerClass d3 = new offerClass("Gnome", Image.asset("assets/elfo.png"), 2, "\$109.22");
 
     return MaterialApp(
       theme: ThemeData(primaryColor: Colors.blue),
       home: Scaffold(
         appBar: AppBar(title: Text("Current Offers")),
-
+        backgroundColor: Colors.grey[100],
         body:
-
-
-        Column(children: [
-
-          d1.build(context),
-          d2.build(context),
-          d3.build(context)
-      ])
+          Column(children: [
+            d1.build(context),
+            d2.build(context),
+            d3.build(context)])
       )
     );
-
   }
 }
 
+
+//class for each offer which appears
 class offerClass extends StatelessWidget{
-
-  //constructor stuff below
-
   String Drivername;
   String RideCost;
   Image DriverPicture;
@@ -58,37 +52,46 @@ class offerClass extends StatelessWidget{
     final ScreenWidth = MediaQuery.of(context).size.width;
     final ScreenHeight = MediaQuery.of(context).size.height;
 
-    return Container(height: (1/8 * ScreenHeight),child: Row(children: <Widget>[
+    return Container(color: Colors.white,height: (1/8 * ScreenHeight),
+        margin: EdgeInsets.only(top: 3.0,bottom: 3.0,left: 6.0,right: 6.0),
+        child: Row(children: <Widget>[
+          Container(margin: EdgeInsets.only(right: 3.0), child: DriverPicture, alignment: Alignment.topLeft,),
 
-      Container(child: DriverPicture, alignment: Alignment.topLeft,),
+          Column(
+            children: <Widget>[
 
-      Column(
-          children: <Widget>[
-            Row(
-              children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
 
-                Text(Drivername, style: TextStyle(fontSize: 12)),
-                Text(RideCost.toString()),
-                ratebox.build(context)
-              ],
-            ),
-            Container(alignment: Alignment.centerLeft,child: Row(
-              children: <Widget>[
-                RaisedButton(
-                  onPressed: null, //someone who knows what they're doing, help me out here
-                  child: Container(
-                    color: Colors.green,
-                    child: Text("ACCEPT")
-                  )
-
+                  Container(margin: EdgeInsets.only(left: 3.0,right: 3.0),child:Text(Drivername, style: TextStyle(fontSize: 12))),
+                  Container(alignment: Alignment.centerRight, margin: EdgeInsets.only(left: 3.0,right: 3.0),child: ratebox.build(context))
+                  ],
                 ),
+
+              Container(alignment: Alignment.centerRight,child: Row(
+
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  RaisedButton(
+                    color: Colors.blue,
+                    onPressed:(){}, //someone who knows what they're doing, help me out here
+                    child: Container(
+                      child: Text("ACCEPT", style: TextStyle(color: Colors.white))
+                      )
+                    ),
+
                 RaisedButton(
-                  onPressed: null, //again, idk how this is supposed to work, so I'm gonna need some help here
+                  color: Colors.red,
+                  onPressed:(){},
                   child: Container(
-                    color: Colors.red,
-                    child: Text("DENY")
+                    child: Text("DENY", style: TextStyle(color: Colors.white),)
                   )
-                )
+                ),
+
+                  Container(alignment: Alignment.topCenter,margin: EdgeInsets.only(left: 3.0,right: 3.0),child: Text(RideCost.toString()))
+
               ],
             ))
           ],
@@ -109,8 +112,6 @@ class RatingClass extends StatelessWidget{
       this.rating = 5;
 
   }
-
-
 
   @override
   Widget build(BuildContext context) {

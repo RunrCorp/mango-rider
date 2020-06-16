@@ -73,6 +73,9 @@ flutter:
     - assets/elf.png
     - assets/marley.png
     - assets/google_logo.png
+    - assets/bagginso.png
+    - assets/elfo.png
+    - assets/marlo.png
 
 
         # An image asset can refer to one or more resolution-specific "variants", see
