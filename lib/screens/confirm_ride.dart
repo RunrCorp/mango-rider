@@ -35,12 +35,24 @@ class _ConfirmRidePageState extends State<ConfirmRidePage> {
   List<LatLng> polylineCoordinates = [];
   PolylinePoints polylinePoints = PolylinePoints();
 
+  BitmapDescriptor sourceIcon;
+  BitmapDescriptor destinationIcon;
+
   final GlobalKey<ScaffoldState> _scaffoldState =
       new GlobalKey<ScaffoldState>();
 
   void initState() {
     print('initializing state');
     super.initState();
+    setSourceAndDestinationIcons();
+  }
+
+  void setSourceAndDestinationIcons() async {
+    sourceIcon = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio: 2.5), 'assets/driving_pin.png');
+    destinationIcon = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio: 2.5),
+        'assets/destination_map_marker.png');
   }
 
   Widget build(BuildContext context) {
@@ -81,12 +93,19 @@ class _ConfirmRidePageState extends State<ConfirmRidePage> {
         elevation: 20,
         backgroundColor: Colors.white,
         onPressed: () {
-          var x = new Future.delayed(const Duration(seconds: 1));
+          //Scaffold.of(context).showSnackBar(
+          //  new SnackBar(content: Text("Ride has been ordered")));
+
+          //var x = new Future.delayed(const Duration(seconds: 1));
           print("showing snackbar");
           _scaffoldState.currentState.showSnackBar(
               new SnackBar(content: new Text("Ride has been ordered")));
-          var y = new Future.delayed(const Duration(seconds: 1));
-          Navigator.of(context).pop();
+          //var y = new Future.delayed(const Duration(seconds: 1));
+          Future.delayed(const Duration(milliseconds: 1000), () {
+            Navigator.of(context).pop();
+          });
+
+          //Navigator.of(context).pop();
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -106,11 +125,13 @@ class _ConfirmRidePageState extends State<ConfirmRidePage> {
       _markers.add(Marker(
         markerId: MarkerId('sourcePin'),
         position: source_location,
+        icon: sourceIcon,
       ));
       // destination pin
       _markers.add(Marker(
         markerId: MarkerId('destPin'),
         position: dest_location,
+        icon: destinationIcon,
       ));
     });
   }
@@ -134,7 +155,7 @@ class _ConfirmRidePageState extends State<ConfirmRidePage> {
       // with an id, an RGB color and the list of LatLng pairs
       Polyline polyline = Polyline(
           polylineId: PolylineId('poly'),
-          color: Color.fromARGB(255, 40, 122, 198),
+          color: Theme.of(context).primaryColor,
           points: polylineCoordinates);
 
       // add the constructed polyline as a set of points

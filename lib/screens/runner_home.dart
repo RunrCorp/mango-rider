@@ -34,17 +34,21 @@ class _HomePageState extends State<HomePage>
       GoogleMapsPlaces(apiKey: "AIzaSyA7OoEiQjyJd35kPT1NWR8WpvbJS-FpdC8");
 
   LatLng source_location;
-  final LatLng _center = const LatLng(40.902732, -74.033893);
+  LatLng _center = LatLng(40, -74);
   final FirebaseUser _user;
 
   _HomePageState(this._user);
 
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
+    setMapPins();
+    print("When the map was created:");
+    print(_center);
   }
 
   @override
   void initState() {
+    super.initState();
     _setSourceLocation();
   }
 
@@ -109,9 +113,14 @@ class _HomePageState extends State<HomePage>
   PanelController _panelController = new PanelController();
   TextEditingController _textEditingController = new TextEditingController();
 
+  Set<Marker> _markers = {};
+
   @override
   Widget build(BuildContext context) {
-    BorderRadiusGeometry radius = BorderRadius.only(
+    print("building page");
+    print("center: ");
+    print(_center);
+    BorderRadiusGeometry radius = const BorderRadius.only(
       topLeft: Radius.circular(24.0),
       topRight: Radius.circular(24.0),
     );
@@ -216,11 +225,12 @@ class _HomePageState extends State<HomePage>
                     icon: Icon(Icons.navigation,
                         color: Theme.of(context).accentColor),
                     border: OutlineInputBorder(
+                      borderSide: BorderSide.none,
                       borderRadius: const BorderRadius.all(
                         const Radius.circular(24),
                       ),
                     ),
-                    fillColor: Colors.white30,
+                    fillColor: Colors.grey.withOpacity(.5),
                     filled: true,
                     //ic
 
@@ -249,10 +259,13 @@ class _HomePageState extends State<HomePage>
             FocusScope.of(context).unfocus();
             _panelController.close();
           },
+          zoomControlsEnabled: true,
+          myLocationButtonEnabled: true,
+          markers: _markers,
           onMapCreated: _onMapCreated,
           initialCameraPosition: CameraPosition(
             target: _center,
-            zoom: 11.0,
+            zoom: 7.0,
           ),
         ),
         borderRadius: radius,
@@ -289,6 +302,29 @@ class _HomePageState extends State<HomePage>
         .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
         .then((Position position) {
       source_location = LatLng(position.latitude, position.longitude);
+      print("received source location");
+      _center = source_location;
+      mapController.moveCamera(CameraUpdate.newLatLng(_center));
+      setState(() {
+        _markers = {
+          Marker(
+            markerId: MarkerId('sourcePin'),
+            position: source_location,
+          )
+        };
+        print("set center");
+      });
     }).catchError((e) => print(e));
+  }
+
+  void setMapPins() {
+    setState(() {
+      // source pin
+      _markers.add(Marker(
+        markerId: MarkerId('sourcePin'),
+        position: _center,
+      ));
+      // destination pin
+    });
   }
 }
