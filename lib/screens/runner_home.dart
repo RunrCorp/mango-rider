@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_google_places/flutter_google_places.dart';
 import 'package:geocoder/geocoder.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_webservice/places.dart';
 import 'package:mango/code/location.dart';
@@ -32,6 +33,7 @@ class _HomePageState extends State<HomePage>
   GoogleMapsPlaces _places =
       GoogleMapsPlaces(apiKey: "AIzaSyA7OoEiQjyJd35kPT1NWR8WpvbJS-FpdC8");
 
+  LatLng source_location;
   final LatLng _center = const LatLng(40.902732, -74.033893);
   final FirebaseUser _user;
 
@@ -39,6 +41,11 @@ class _HomePageState extends State<HomePage>
 
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
+  }
+
+  @override
+  void initState() {
+    _setSourceLocation();
   }
 
   String currentProfilePicture = "";
@@ -206,13 +213,14 @@ class _HomePageState extends State<HomePage>
                 },
                 decoration: InputDecoration(
                     contentPadding: EdgeInsets.only(left: 10.0),
-                    icon: new Icon(Icons.navigation),
+                    icon: Icon(Icons.navigation,
+                        color: Theme.of(context).accentColor),
                     border: OutlineInputBorder(
                       borderRadius: const BorderRadius.all(
                         const Radius.circular(24),
                       ),
                     ),
-                    fillColor: Colors.grey,
+                    fillColor: Colors.white30,
                     filled: true,
                     //ic
 
@@ -263,12 +271,24 @@ class _HomePageState extends State<HomePage>
       double lng = detail.result.geometry.location.lng;
 
       var address = await Geocoder.local.findAddressesFromQuery(p.description);
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => ConfirmRidePage(lat, lng)));
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  ConfirmRidePage(source_location, lat, lng)));
       print(address);
       print("\n\n\\nn\n\n\n\n\n\n\n\n\n\n\n\n\n");
       print(lat);
       print(lng);
     }
+  }
+
+  void _setSourceLocation() async {
+    final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
+    await geolocator
+        .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
+        .then((Position position) {
+      source_location = LatLng(position.latitude, position.longitude);
+    }).catchError((e) => print(e));
   }
 }

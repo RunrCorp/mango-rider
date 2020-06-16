@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 const googleAPIKey = "AIzaSyA7OoEiQjyJd35kPT1NWR8WpvbJS-FpdC8";
@@ -17,18 +16,12 @@ class ConfirmRidePage extends StatefulWidget {
   num endLat;
   num endLong;
 
-  ConfirmRidePage(@required this.endLat, @required this.endLong) {
+  ConfirmRidePage(@required original_location, @required this.endLat,
+      @required this.endLong) {
+    source_location = original_location;
     dest_location = LatLng(endLat, endLong);
-    final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
-
-    geolocator
-        .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
-        .then((Position position) {
-      source_location = LatLng(position.latitude, position.longitude);
-    }).catchError((e) => print(e));
-
-    print("set source location");
-    print(source_location.latitude);
+    print(source_location);
+    print("constructor finished");
   }
   @override
   _ConfirmRidePageState createState() => _ConfirmRidePageState();
@@ -36,23 +29,23 @@ class ConfirmRidePage extends StatefulWidget {
 
 class _ConfirmRidePageState extends State<ConfirmRidePage> {
   Completer<GoogleMapController> _controller = Completer();
+  GoogleMapController mapController;
   Set<Marker> _markers = {};
   Set<Polyline> _polylines = {};
   List<LatLng> polylineCoordinates = [];
   PolylinePoints polylinePoints = PolylinePoints();
 
-  void initState() {
-    super.initState();
-    final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
+  final GlobalKey<ScaffoldState> _scaffoldState =
+      new GlobalKey<ScaffoldState>();
 
-    geolocator
-        .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
-        .then((Position position) {
-      source_location = LatLng(position.latitude, position.longitude);
-    }).catchError((e) => print(e));
+  void initState() {
+    print('initializing state');
+    super.initState();
   }
 
   Widget build(BuildContext context) {
+    print("trying to build");
+    print(source_location);
     print(source_location.latitude);
     print(source_location.longitude);
     print("printed for the first time");
@@ -66,10 +59,12 @@ class _ConfirmRidePageState extends State<ConfirmRidePage> {
     print(source_location.longitude);
 
     return Scaffold(
+      key: _scaffoldState,
       appBar: new AppBar(
         title: Text("Confirm Ride"),
       ),
       body: GoogleMap(
+          zoomControlsEnabled: true,
           myLocationEnabled: true,
           compassEnabled: true,
           tiltGesturesEnabled: false,
@@ -78,11 +73,29 @@ class _ConfirmRidePageState extends State<ConfirmRidePage> {
           mapType: MapType.normal,
           initialCameraPosition: initialLocation,
           onMapCreated: onMapCreated),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(
+          Icons.check,
+          color: Theme.of(context).primaryColor,
+        ),
+        elevation: 20,
+        backgroundColor: Colors.white,
+        onPressed: () {
+          var x = new Future.delayed(const Duration(seconds: 1));
+          print("showing snackbar");
+          _scaffoldState.currentState.showSnackBar(
+              new SnackBar(content: new Text("Ride has been ordered")));
+          var y = new Future.delayed(const Duration(seconds: 1));
+          Navigator.of(context).pop();
+        },
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 
   void onMapCreated(GoogleMapController controller) {
     _controller.complete(controller);
+    mapController = controller;
     setMapPins();
     setPolylines();
   }
@@ -128,6 +141,27 @@ class _ConfirmRidePageState extends State<ConfirmRidePage> {
       // to the polyline set, which will eventually
       // end up showing up on the map
       _polylines.add(polyline);
+      _setMapFitToTour(_polylines);
     });
+  }
+
+  void _setMapFitToTour(Set<Polyline> p) {
+    double minLat = p.first.points.first.latitude;
+    double minLong = p.first.points.first.longitude;
+    double maxLat = p.first.points.first.latitude;
+    double maxLong = p.first.points.first.longitude;
+    p.forEach((poly) {
+      poly.points.forEach((point) {
+        if (point.latitude < minLat) minLat = point.latitude;
+        if (point.latitude > maxLat) maxLat = point.latitude;
+        if (point.longitude < minLong) minLong = point.longitude;
+        if (point.longitude > maxLong) maxLong = point.longitude;
+      });
+    });
+    mapController.moveCamera(CameraUpdate.newLatLngBounds(
+        LatLngBounds(
+            southwest: LatLng(minLat, minLong),
+            northeast: LatLng(maxLat, maxLong)),
+        20));
   }
 }
