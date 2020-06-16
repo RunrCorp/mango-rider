@@ -176,7 +176,7 @@ class _HomePageState extends State<HomePage>
                   position: BadgePosition.topRight(),
                 ), //new Icon(Icons.inbox),
                 onTap: () {
-                  //Navigator.of(context).pop();
+
                   Navigator.of(context).push(new MaterialPageRoute(
                       builder: (BuildContext context) => new OffersPage()));
                 }),
