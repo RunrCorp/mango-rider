@@ -219,6 +219,7 @@ class _HomePageState extends State<HomePage>
                   print(
                       "Prediction has been received, now displaying prediction");
                   displayPrediction(p);
+                  _panelController.close();
                 },
                 decoration: InputDecoration(
                     contentPadding: EdgeInsets.only(left: 10.0),
