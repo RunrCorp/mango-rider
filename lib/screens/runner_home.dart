@@ -1,4 +1,5 @@
 //import 'package:camera/camera.dart';
+import 'package:badges/badges.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -165,7 +166,14 @@ class _HomePageState extends State<HomePage>
                 }),
             new ListTile(
                 title: new Text("Current Offers"),
-                trailing: new Icon(Icons.inbox),
+                trailing: Badge(
+                  child: Icon(Icons.inbox),
+                  badgeColor: Colors.red,
+                  badgeContent: Text("3"),
+                  elevation: 2,
+                  shape: BadgeShape.circle,
+                  position: BadgePosition.topRight(),
+                ), //new Icon(Icons.inbox),
                 onTap: () {
                   //Navigator.of(context).pop();
                   Navigator.of(context).push(new MaterialPageRoute(
