@@ -157,13 +157,12 @@ class _HomePageState extends State<HomePage>
               ),
             ),
             new ListTile(
-                title: new Text("Past Deliveries"),
+                title: new Text("Past Orders"),
                 trailing: new Icon(Icons.timelapse),
                 onTap: () {
                   Navigator.of(context).pop();
                   Navigator.of(context).push(new MaterialPageRoute(
-                      builder: (BuildContext context) =>
-                          new OrderHistoryPage()));
+                      builder: (BuildContext context) => new OrderHistoryPage()));
                 }),
             new ListTile(
                 title: new Text("Current Offers"),
