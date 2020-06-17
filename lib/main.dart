@@ -16,12 +16,18 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
-      title: "Runner",
+      title: "Runr",
       theme: new ThemeData(
         primaryColor: new Color(0xffe23149),
         accentColor: new Color(0xffe23149),
         backgroundColor: new Color(0xffe23149),
         unselectedWidgetColor: new Color(0xffe23149),
+        primarySwatch: Colors.deepOrange,
+        brightness: Brightness.light
+      ),
+      darkTheme: ThemeData(
+        primarySwatch: Colors.deepPurple,
+        brightness: Brightness.dark,
       ),
       debugShowCheckedModeBanner: false,
       home: new LoginPage(),
