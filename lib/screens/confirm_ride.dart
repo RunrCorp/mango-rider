@@ -85,28 +85,31 @@ class _ConfirmRidePageState extends State<ConfirmRidePage> {
           mapType: MapType.normal,
           initialCameraPosition: initialLocation,
           onMapCreated: onMapCreated),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(
-          Icons.check,
-          color: Theme.of(context).primaryColor,
+      floatingActionButton: Container(
+        margin: const EdgeInsets.only(bottom: 32.0),
+        child: FloatingActionButton(
+          child: Icon(
+            Icons.check,
+            color: Theme.of(context).primaryColor,
+          ),
+          elevation: 20,
+          backgroundColor: Colors.white,
+          onPressed: () {
+            //Scaffold.of(context).showSnackBar(
+            //  new SnackBar(content: Text("Ride has been ordered")));
+
+            //var x = new Future.delayed(const Duration(seconds: 1));
+            print("showing snackbar");
+            _scaffoldState.currentState.showSnackBar(
+                new SnackBar(content: new Text("Ride has been ordered")));
+            //var y = new Future.delayed(const Duration(seconds: 1));
+            Future.delayed(const Duration(milliseconds: 1000), () {
+              Navigator.of(context).pop();
+            });
+
+            //Navigator.of(context).pop();
+          },
         ),
-        elevation: 20,
-        backgroundColor: Colors.white,
-        onPressed: () {
-          //Scaffold.of(context).showSnackBar(
-          //  new SnackBar(content: Text("Ride has been ordered")));
-
-          //var x = new Future.delayed(const Duration(seconds: 1));
-          print("showing snackbar");
-          _scaffoldState.currentState.showSnackBar(
-              new SnackBar(content: new Text("Ride has been ordered")));
-          //var y = new Future.delayed(const Duration(seconds: 1));
-          Future.delayed(const Duration(milliseconds: 1000), () {
-            Navigator.of(context).pop();
-          });
-
-          //Navigator.of(context).pop();
-        },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );

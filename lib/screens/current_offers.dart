@@ -80,8 +80,15 @@ class offerClass extends StatelessWidget {
                     children: <Widget>[
                       RaisedButton(
                           color: Colors.blue,
-                          onPressed:
-                              () {}, //someone who knows what they're doing, help me out here
+                          onPressed: () {
+                            Scaffold.of(context).showSnackBar(SnackBar(
+                                content: Text(
+                                    "Ride has been accepted and is on the way")));
+                            Future.delayed(const Duration(milliseconds: 1000),
+                                () {
+                              Navigator.of(context).pop();
+                            });
+                          }, //someone who knows what they're doing, help me out here
                           child: Container(
                               child: Text("ACCEPT",
                                   style: TextStyle(color: Colors.white)))),

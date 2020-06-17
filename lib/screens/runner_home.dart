@@ -102,12 +102,12 @@ class _HomePageState extends State<HomePage>
           streetAddress: "74 Stratford Rd",
           city: "Dumont",
           state: "NJ",
-          zipCode: "00000"),
+          zipCode: "82634"),
       new RunnerLocation(
-          streetAddress: "I forgot you ",
-          city: "address",
-          state: "Alec",
-          zipCode: "0000"),
+          streetAddress: "1007 Mountain Drive",
+          city: "Gotham",
+          state: "NJ",
+          zipCode: "2187"),
     ];
   }
 
@@ -132,6 +132,7 @@ class _HomePageState extends State<HomePage>
             child: new FloatingActionButton(
               onPressed: () {
                 Scaffold.of(context).openEndDrawer();
+                FocusScope.of(context).unfocus();
               },
               child: const Icon(Icons.menu),
               backgroundColor: Colors.white,
@@ -176,7 +177,6 @@ class _HomePageState extends State<HomePage>
                   position: BadgePosition.topRight(),
                 ), //new Icon(Icons.inbox),
                 onTap: () {
-
                   Navigator.of(context).push(new MaterialPageRoute(
                       builder: (BuildContext context) => new OffersPage()));
                 }),
@@ -214,7 +214,7 @@ class _HomePageState extends State<HomePage>
               child: TextField(
                 controller: _textEditingController,
                 onTap: () async {
-                  _panelController.open();
+                  //_panelController.open();
                   print("on tap function entered");
                   // show input autocomplete with selected mode
                   // then get the Prediction selected
@@ -228,7 +228,6 @@ class _HomePageState extends State<HomePage>
                   print(
                       "Prediction has been received, now displaying prediction");
                   displayPrediction(p);
-                  _panelController.close();
                 },
                 decoration: InputDecoration(
                     contentPadding: EdgeInsets.only(left: 10.0),
@@ -267,7 +266,10 @@ class _HomePageState extends State<HomePage>
           onTap: (_) {
             print("Closing panel");
             FocusScope.of(context).unfocus();
-            _panelController.close();
+
+            if (_panelController.isPanelOpen) {
+              _panelController.close();
+            }
           },
           zoomControlsEnabled: true,
           myLocationButtonEnabled: true,
