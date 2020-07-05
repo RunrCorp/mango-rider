@@ -8,7 +8,7 @@ import 'package:geocoder/geocoder.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_webservice/places.dart';
-import 'package:mango/code/location.dart';
+import 'package:mango/models/location.dart';
 import 'package:mango/screens/confirm_ride.dart';
 import 'package:mango/screens/order_history.dart';
 import 'package:mango/screens/settings.dart';
