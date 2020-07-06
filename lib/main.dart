@@ -23,7 +23,8 @@ class MyApp extends StatelessWidget {
         backgroundColor: new Color(0xffe23149),
         unselectedWidgetColor: new Color(0xffe23149),
         primarySwatch: Colors.deepOrange,
-        brightness: Brightness.light
+        brightness: Brightness.light,
+        fontFamily: 'Quicksand'
       ),
       darkTheme: ThemeData(
         primarySwatch: Colors.deepPurple,
