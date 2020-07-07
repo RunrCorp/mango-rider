@@ -54,7 +54,7 @@ class _HomePageState extends State<HomePage>
   void didChangeDependencies() {
     Position currentLocation = Provider.of<Position>(context, listen: true);
     
-    source_location = (currentLocation == null) ? LatLng(40, -74) : LatLng(currentLocation.latitude, currentLocation.longitude);
+    source_location = (currentLocation == null) ? LatLng(0, 0) : LatLng(currentLocation.latitude, currentLocation.longitude);
     _center = source_location;
     _markers = {
       Marker(
@@ -62,6 +62,7 @@ class _HomePageState extends State<HomePage>
         position: source_location,
       )
     };
+    
     super.didChangeDependencies();
   }
 
@@ -344,7 +345,8 @@ class _HomePageState extends State<HomePage>
     }
   }
 
-  void _setSourceLocation1() async {
+  // This function got replaced by the StreamProvider in didChangeDependencies() lole!
+  void _setSourceLocation() async {
     final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
     await geolocator
         .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
@@ -362,9 +364,6 @@ class _HomePageState extends State<HomePage>
       });
     }).catchError((e) => print(e));
   }
-
-
-
 
   void setMapPins() {
     setState(() {
