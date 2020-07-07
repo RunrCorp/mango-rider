@@ -56,20 +56,11 @@ class _ConfirmRidePageState extends State<ConfirmRidePage> {
   }
 
   Widget build(BuildContext context) {
-    print("trying to build");
-    print(source_location);
-    print(source_location.latitude);
-    print(source_location.longitude);
-    print("printed for the first time");
     CameraPosition initialLocation = CameraPosition(
         zoom: CAMERA_ZOOM,
         bearing: CAMERA_BEARING,
         tilt: CAMERA_TILT,
         target: source_location);
-    print(initialLocation.bearing);
-    print(source_location.latitude);
-    print(source_location.longitude);
-
     return Scaffold(
       key: _scaffoldState,
       appBar: new AppBar(
@@ -88,25 +79,15 @@ class _ConfirmRidePageState extends State<ConfirmRidePage> {
       floatingActionButton: Container(
         margin: const EdgeInsets.only(bottom: 32.0),
         child: FloatingActionButton(
-          child: Icon(
-            Icons.check,
-            color: Theme.of(context).primaryColor,
-          ),
+          child: Icon(Icons.check, color: Theme.of(context).primaryColor),
           elevation: 20,
           backgroundColor: Colors.white,
           onPressed: () {
-            //Scaffold.of(context).showSnackBar(
-            //  new SnackBar(content: Text("Ride has been ordered")));
-
-            //var x = new Future.delayed(const Duration(seconds: 1));
-            print("showing snackbar");
             _scaffoldState.currentState.showSnackBar(
                 new SnackBar(content: new Text("Ride has been ordered")));
-            //var y = new Future.delayed(const Duration(seconds: 1));
             Future.delayed(const Duration(milliseconds: 1000), () {
               Navigator.of(context).pop();
             });
-
             //Navigator.of(context).pop();
           },
         ),
@@ -147,23 +128,16 @@ class _ConfirmRidePageState extends State<ConfirmRidePage> {
         dest_location.latitude,
         dest_location.longitude);
     if (result.isNotEmpty) {
-      // loop through all PointLatLng points and convert them
-      // to a list of LatLng, required by the Polyline
       result.forEach((PointLatLng point) {
         polylineCoordinates.add(LatLng(point.latitude, point.longitude));
       });
     }
     setState(() {
-      // create a Polyline instance
-      // with an id, an RGB color and the list of LatLng pairs
       Polyline polyline = Polyline(
           polylineId: PolylineId('poly'),
           color: Theme.of(context).primaryColor,
           points: polylineCoordinates);
 
-      // add the constructed polyline as a set of points
-      // to the polyline set, which will eventually
-      // end up showing up on the map
       _polylines.add(polyline);
       _setMapFitToTour(_polylines);
     });
