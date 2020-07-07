@@ -34,9 +34,11 @@ class _HomePageState extends State<HomePage>
   GoogleMapController mapController;
   GoogleMapsPlaces _places =
       GoogleMapsPlaces(apiKey: "AIzaSyA7OoEiQjyJd35kPT1NWR8WpvbJS-FpdC8");
+  
+  Set<Marker> _markers = {};
 
   LatLng source_location;
-  LatLng _center = LatLng(40, -74);
+  LatLng _center;
   final FirebaseUser _user;
 
   _HomePageState(this._user);
@@ -46,6 +48,21 @@ class _HomePageState extends State<HomePage>
     setMapPins();
     print("When the map was created:");
     print(_center);
+  }
+
+  @override
+  void didChangeDependencies() {
+    Position currentLocation = Provider.of<Position>(context, listen: true);
+    
+    source_location = (currentLocation == null) ? LatLng(40, -74) : LatLng(currentLocation.latitude, currentLocation.longitude);
+    _center = source_location;
+    _markers = {
+      Marker(
+        markerId: MarkerId('sourcePin'),
+        position: source_location,
+      )
+    };
+    super.didChangeDependencies();
   }
 
   @override
@@ -131,16 +148,16 @@ class _HomePageState extends State<HomePage>
   PanelController _panelController = new PanelController();
   TextEditingController _textEditingController = new TextEditingController();
 
-  Set<Marker> _markers = {};
-
   @override
   Widget build(BuildContext context) {
     print("building page");
     print("center: ");
     print(_center);
 
+    /*
     Position currentLocation = Provider.of<Position>(context);
     print("currentLocation: " + currentLocation.latitude.toString() + ", " + currentLocation.longitude.toString() + ". " + currentLocation.accuracy.toString());
+    */ 
 
     BorderRadiusGeometry radius = const BorderRadius.only(
       topLeft: Radius.circular(24.0),
@@ -327,8 +344,7 @@ class _HomePageState extends State<HomePage>
     }
   }
 
-/*
-  void _setSourceLocation() async {
+  void _setSourceLocation1() async {
     final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
     await geolocator
         .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
@@ -346,7 +362,9 @@ class _HomePageState extends State<HomePage>
       });
     }).catchError((e) => print(e));
   }
-*/ 
+
+
+
 
   void setMapPins() {
     setState(() {
