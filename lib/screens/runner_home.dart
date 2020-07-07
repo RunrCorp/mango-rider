@@ -74,17 +74,33 @@ class _HomePageState extends State<HomePage>
         itemBuilder: (context, index) {
           return Card(
             elevation: 1,
-            child: ListTile(
-              contentPadding: const EdgeInsets.all(3),
-              title: Text(locations[index].streetAddress),
-              subtitle: Text(
-                locations[index].city +
-                    ", " +
-                    locations[index].state +
-                    "\n" +
-                    locations[index].zipCode,
-                maxLines: 3,
-              ),
+            child: Row(
+              children: [
+                SizedBox(
+                  width: 10,
+                ),
+                Icon(
+                  Icons.location_on,
+                  color: Theme.of(context).primaryColor,
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Expanded(
+                  child: ListTile(
+                    contentPadding: const EdgeInsets.all(3),
+                    title: Text(locations[index].streetAddress),
+                    subtitle: Text(
+                      locations[index].city +
+                          ", " +
+                          locations[index].state +
+                          "\n" +
+                          locations[index].zipCode,
+                      maxLines: 3,
+                    ),
+                  ),
+                ),
+              ],
             ),
           );
         });
@@ -263,9 +279,7 @@ class _HomePageState extends State<HomePage>
 //        ),
         body: GoogleMap(
           onTap: (_) {
-            print("Closing panel");
             FocusScope.of(context).unfocus();
-
             if (_panelController.isPanelOpen) {
               _panelController.close();
             }
@@ -313,7 +327,6 @@ class _HomePageState extends State<HomePage>
         .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
         .then((Position position) {
       source_location = LatLng(position.latitude, position.longitude);
-      print("received source location");
       _center = source_location;
       mapController.moveCamera(CameraUpdate.newLatLng(_center));
       setState(() {
@@ -323,7 +336,6 @@ class _HomePageState extends State<HomePage>
             position: source_location,
           )
         };
-        print("set center");
       });
     }).catchError((e) => print(e));
   }
