@@ -12,6 +12,7 @@ import 'package:mango/models/location.dart';
 import 'package:mango/screens/confirm_ride.dart';
 import 'package:mango/screens/order_history.dart';
 import 'package:mango/screens/settings.dart';
+import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 import 'current_offers.dart';
@@ -50,7 +51,7 @@ class _HomePageState extends State<HomePage>
   @override
   void initState() {
     super.initState();
-    _setSourceLocation();
+    // _setSourceLocation();
   }
 
   String currentProfilePicture = "";
@@ -137,6 +138,10 @@ class _HomePageState extends State<HomePage>
     print("building page");
     print("center: ");
     print(_center);
+
+    Position currentLocation = Provider.of<Position>(context);
+    print("currentLocation: " + currentLocation.latitude.toString() + ", " + currentLocation.longitude.toString() + ". " + currentLocation.accuracy.toString());
+
     BorderRadiusGeometry radius = const BorderRadius.only(
       topLeft: Radius.circular(24.0),
       topRight: Radius.circular(24.0),
@@ -178,7 +183,8 @@ class _HomePageState extends State<HomePage>
                 onTap: () {
                   Navigator.of(context).pop();
                   Navigator.of(context).push(new MaterialPageRoute(
-                      builder: (BuildContext context) => new OrderHistoryPage()));
+                      builder: (BuildContext context) =>
+                          new OrderHistoryPage()));
                 }),
             new ListTile(
                 title: new Text("Current Offers"),
@@ -321,6 +327,7 @@ class _HomePageState extends State<HomePage>
     }
   }
 
+/*
   void _setSourceLocation() async {
     final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
     await geolocator
@@ -339,6 +346,7 @@ class _HomePageState extends State<HomePage>
       });
     }).catchError((e) => print(e));
   }
+*/ 
 
   void setMapPins() {
     setState(() {
