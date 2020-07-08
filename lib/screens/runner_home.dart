@@ -72,36 +72,37 @@ class _HomePageState extends State<HomePage>
     return new ListView.builder(
         itemCount: locations.length,
         itemBuilder: (context, index) {
-          return Card(
-            elevation: 1,
-            child: Row(
-              children: [
-                SizedBox(
-                  width: 10,
-                ),
-                Icon(
-                  Icons.location_on,
-                  color: Theme.of(context).primaryColor,
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                Expanded(
+          return Row(
+            children: [
+              SizedBox(
+                width: 10,
+              ),
+              Image.asset('assets/prediction_pin.png'),
+              SizedBox(
+                width: 10,
+              ),
+              Expanded(
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border(bottom: BorderSide(color: Color.fromRGBO(0, 0, 0, .22), width: 2)),
+                  ),
                   child: ListTile(
                     contentPadding: const EdgeInsets.all(3),
-                    title: Text(locations[index].streetAddress),
+                    title: Text(
+                      locations[index].streetAddress,
+                      style: TextStyle(fontSize: 20),
+                    ),
                     subtitle: Text(
                       locations[index].city +
                           ", " +
-                          locations[index].state +
-                          "\n" +
-                          locations[index].zipCode,
-                      maxLines: 3,
+                         locations[index].state +
+                         " " +
+                         locations[index].zipCode,
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           );
         });
   }
@@ -214,7 +215,7 @@ class _HomePageState extends State<HomePage>
       ),
       body: SlidingUpPanel(
         controller: _panelController,
-        minHeight: 80,
+        minHeight: 95,
         maxHeight: 400,
 
         //header: new Container(
@@ -222,10 +223,13 @@ class _HomePageState extends State<HomePage>
         //  child: new TextField(),
         //),
         panel: Container(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.fromLTRB(20, 11, 20, 20),
           child: Column(children: <Widget>[
+            //could replace with a vector here?
+            Image.asset("assets/pullup_rectangle.png", width: 47, height: 8),
             Container(
-              height: 45,
+              padding: const EdgeInsets.only(top: 12),
+              height: 49,
               child: TextField(
                 controller: _textEditingController,
                 onTap: () async {
@@ -245,19 +249,17 @@ class _HomePageState extends State<HomePage>
                   displayPrediction(p);
                 },
                 decoration: InputDecoration(
-                    contentPadding: EdgeInsets.only(left: 10.0),
+                    contentPadding: EdgeInsets.only(left: 10),
                     icon: Icon(Icons.navigation,
                         color: Theme.of(context).accentColor),
                     border: OutlineInputBorder(
                       borderSide: BorderSide.none,
                       borderRadius: const BorderRadius.all(
-                        const Radius.circular(24),
+                        const Radius.circular(t),
                       ),
                     ),
-                    fillColor: Colors.grey.withOpacity(.5),
+                    fillColor: Color.fromRGBO(234, 234, 234, 1),
                     filled: true,
-                    //ic
-
                     hintText: "Where to?",
                     hintStyle: TextStyle(
                       color: Colors.black,
