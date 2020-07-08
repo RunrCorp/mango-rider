@@ -12,8 +12,8 @@ import 'package:mango/models/location.dart';
 import 'package:mango/screens/confirm_ride.dart';
 import 'package:mango/screens/order_history.dart';
 import 'package:mango/screens/settings.dart';
-import 'package:provider/provider.dart';
 import 'package:mango/services/geolocation_service.dart';
+import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 import 'current_offers.dart';
@@ -30,8 +30,7 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => new _HomePageState(_user);
 }
 
-class _HomePageState extends State<HomePage>
-    with SingleTickerProviderStateMixin {
+class _HomePageState extends State<HomePage> {
   GoogleMapController mapController;
   GoogleMapsPlaces _places =
       GoogleMapsPlaces(apiKey: "AIzaSyA7OoEiQjyJd35kPT1NWR8WpvbJS-FpdC8");
@@ -50,13 +49,17 @@ class _HomePageState extends State<HomePage>
     setMapPins();
     print("When the map was created:");
     print(_center);
+    //mapController.
   }
 
   @override
   void didChangeDependencies() {
     Position currentLocation = Provider.of<Position>(context, listen: true);
+    print("didChangeDependences called");
 
-    source_location = (currentLocation == null) ? LatLng(0, 0) : LatLng(currentLocation.latitude, currentLocation.longitude);
+    source_location = (currentLocation == null)
+        ? LatLng(0, 0)
+        : LatLng(currentLocation.latitude, currentLocation.longitude);
     _center = source_location;
     _markers = {
       Marker(
@@ -151,16 +154,14 @@ class _HomePageState extends State<HomePage>
   PanelController _panelController = new PanelController();
   TextEditingController _textEditingController = new TextEditingController();
 
-
-
   @override
   Widget build(BuildContext context) {
     print("building page");
     print("center: ");
     print(_center);
 
-    /*
     Position currentLocation = Provider.of<Position>(context);
+    /*
     print("currentLocation: " + currentLocation.latitude.toString() + ", " + currentLocation.longitude.toString() + ". " + currentLocation.accuracy.toString());
     */
 
@@ -305,22 +306,24 @@ class _HomePageState extends State<HomePage>
 //            ),
 //          ),
 //        ),
-        body: GoogleMap(
-          onTap: (_) {
-            FocusScope.of(context).unfocus();
-            if (_panelController.isPanelOpen) {
-              _panelController.close();
-            }
-          },
-          zoomControlsEnabled: true,
-          myLocationButtonEnabled: true,
-          markers: _markers,
-          onMapCreated: _onMapCreated,
-          initialCameraPosition: CameraPosition(
-            target: _center,
-            zoom: 15.0,
-          ),
-        ),
+        body: (currentLocation != null)
+            ? GoogleMap(
+                onTap: (_) {
+                  FocusScope.of(context).unfocus();
+                  if (_panelController.isPanelOpen) {
+                    _panelController.close();
+                  }
+                },
+                zoomControlsEnabled: true,
+                myLocationButtonEnabled: true,
+                markers: _markers,
+                onMapCreated: _onMapCreated,
+                initialCameraPosition: CameraPosition(
+                  target: _center,
+                  zoom: 15.0,
+                ),
+              )
+            : CircularProgressIndicator(),
         borderRadius: radius,
       ),
     );
