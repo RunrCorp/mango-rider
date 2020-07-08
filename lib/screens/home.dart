@@ -18,19 +18,11 @@ import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 import 'current_offers.dart';
 
-class HomePage extends StatefulWidget {
-//  final List<CameraDescription> cameras;
-//  HomePage({this.cameras});
-
+class HomePage extends StatelessWidget {
   final FirebaseUser _user;
 
   HomePage(this._user);
 
-  @override
-  _HomePageState createState() => new _HomePageState(_user);
-}
-
-class _HomePageState extends State<HomePage> {
   GoogleMapController mapController;
   GoogleMapsPlaces _places =
       GoogleMapsPlaces(apiKey: "AIzaSyA7OoEiQjyJd35kPT1NWR8WpvbJS-FpdC8");
@@ -39,10 +31,7 @@ class _HomePageState extends State<HomePage> {
 
   LatLng source_location;
   LatLng _center = LatLng(40, -74);
-  final FirebaseUser _user;
   final geolocatorService = GeoLocatorService();
-
-  _HomePageState(this._user);
 
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
@@ -52,43 +41,14 @@ class _HomePageState extends State<HomePage> {
     //mapController.
   }
 
-  @override
-  void didChangeDependencies() {
-    Position currentLocation = Provider.of<Position>(context, listen: true);
-    print("didChangeDependences called");
-
-    source_location = (currentLocation == null)
-        ? LatLng(0, 0)
-        : LatLng(currentLocation.latitude, currentLocation.longitude);
-    _center = source_location;
-    _markers = {
-      Marker(
-        markerId: MarkerId('sourcePin'),
-        position: source_location,
-      )
-    };
-
-    super.didChangeDependencies();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    //source_location = Provider.of<Position>(context);
-  }
-
   String currentProfilePicture = "";
-
-  String otherProfilePicture =
-      "http://www.jacklee.us/static/media/potato.7dedc136.png";
+  String otherProfilePicture = "";
 
   void editPicture() {
     print("Tapped here to edit picture!");
     String temp = currentProfilePicture;
-    setState(() {
-      currentProfilePicture = otherProfilePicture;
-      otherProfilePicture = temp;
-    });
+    currentProfilePicture = otherProfilePicture;
+    otherProfilePicture = temp;
   }
 
   Widget _buildSuggestions() {
@@ -160,10 +120,17 @@ class _HomePageState extends State<HomePage> {
     print("center: ");
     print(_center);
 
-    Position currentLocation = Provider.of<Position>(context);
-    /*
-    print("currentLocation: " + currentLocation.latitude.toString() + ", " + currentLocation.longitude.toString() + ". " + currentLocation.accuracy.toString());
-    */
+    Position currentLocation = Provider.of<Position>(context, listen: true);
+    source_location = (currentLocation == null)
+        ? LatLng(0, 0)
+        : LatLng(currentLocation.latitude, currentLocation.longitude);
+    _center = source_location;
+    _markers = {
+      Marker(
+        markerId: MarkerId('sourcePin'),
+        position: source_location,
+      )
+    };
 
     BorderRadiusGeometry radius = const BorderRadius.only(
       topLeft: Radius.circular(24.0),
@@ -271,7 +238,7 @@ class _HomePageState extends State<HomePage> {
                   );
                   print(
                       "Prediction has been received, now displaying prediction");
-                  displayPrediction(p);
+                  displayPrediction(p, context);
                 },
                 decoration: InputDecoration(
                     contentPadding: EdgeInsets.only(left: 10.0),
@@ -298,14 +265,6 @@ class _HomePageState extends State<HomePage> {
             ),
           ]),
         ),
-//        collapsed: Container(
-//          child: Center(r
-//            child: Text(
-//              "Hey ${_user.displayName}!",
-//              style: TextStyle(fontSize: 30),
-//            ),
-//          ),
-//        ),
         body: (currentLocation != null)
             ? GoogleMap(
                 onTap: (_) {
@@ -329,7 +288,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Future<Null> displayPrediction(Prediction p) async {
+  Future<Null> displayPrediction(Prediction p, context) async {
     print("Displaying Prediction");
     if (p != null) {
       PlacesDetailsResponse detail =
@@ -346,40 +305,16 @@ class _HomePageState extends State<HomePage> {
               builder: (context) =>
                   ConfirmRidePage(source_location, lat, lng)));
       print(address);
-      print("\n\n\\nn\n\n\n\n\n\n\n\n\n\n\n\n\n");
+      print("/n");
       print(lat);
       print(lng);
     }
   }
 
-  // This function got replaced by the StreamProvider in didChangeDependencies() lole!
-  void _setSourceLocation() async {
-    final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
-    await geolocator
-        .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
-        .then((Position position) {
-      source_location = LatLng(position.latitude, position.longitude);
-      _center = source_location;
-      mapController.moveCamera(CameraUpdate.newLatLng(_center));
-      setState(() {
-        _markers = {
-          Marker(
-            markerId: MarkerId('sourcePin'),
-            position: source_location,
-          )
-        };
-      });
-    }).catchError((e) => print(e));
-  }
-
   void setMapPins() {
-    setState(() {
-      // source pin
-      _markers.add(Marker(
-        markerId: MarkerId('sourcePin'),
-        position: _center,
-      ));
-      // destination pin
-    });
+    _markers.add(Marker(
+      markerId: MarkerId('sourcePin'),
+      position: _center,
+    ));
   }
 }
