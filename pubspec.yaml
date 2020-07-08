@@ -78,7 +78,6 @@ flutter:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
   assets:
-    - assets/fonts/Quicksand-Bold.ttf
     - assets/runr.png
     - assets/mango.png
     - assets/missingmango.png
@@ -91,6 +90,14 @@ flutter:
     - assets/marlo.png
     - assets/destination_map_marker.png
     - assets/driving_pin.png
+    - assets/prediction_pin.png
+    - assets/pullup_rectangle.png
+    - assets/fonts/Quicksand-Bold.ttf
+    # These fonts are unused, but are here in case we need them
+    # - assets/fonts/Quicksand-Light.ttf
+    # - assets/fonts/Quicksand-Regular.ttf
+    # - assets/fonts/Quicksand-Medium.ttf
+    # - assets/fonts/Quicksand-SemiBold.ttf
 
 
         # An image asset can refer to one or more resolution-specific "variants", see

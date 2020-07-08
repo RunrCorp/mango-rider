@@ -61,17 +61,14 @@ class _LoginPageState extends State<LoginPage> {
               ),
               SizedBox(height: ScreenHeight * 1 / 10),
               _signInButton(),
-              SizedBox(height: 20),
+              SizedBox(height: 19),
               Text("Forgot Password?", style: TextStyle(color: Colors.white)),
               SizedBox(
                   height: ScreenHeight -
                       (ScreenHeight * 1 / 6.7 +
                           3 / 4 * ScreenWidth +
                           ScreenHeight * 1 / 10 +
-                          35 +
-                          15 +
-                          20 +
-                          40)),
+                          160)),
               Text("Runr © LLC 2020", style: TextStyle(color: Colors.white))
             ],
           ),
