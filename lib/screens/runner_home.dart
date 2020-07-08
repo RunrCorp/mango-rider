@@ -13,6 +13,7 @@ import 'package:mango/screens/confirm_ride.dart';
 import 'package:mango/screens/order_history.dart';
 import 'package:mango/screens/settings.dart';
 import 'package:provider/provider.dart';
+import 'package:mango/services/geolocation_service.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 import 'current_offers.dart';
@@ -34,12 +35,13 @@ class _HomePageState extends State<HomePage>
   GoogleMapController mapController;
   GoogleMapsPlaces _places =
       GoogleMapsPlaces(apiKey: "AIzaSyA7OoEiQjyJd35kPT1NWR8WpvbJS-FpdC8");
-  
+
   Set<Marker> _markers = {};
 
   LatLng source_location;
-  LatLng _center;
+  LatLng _center = LatLng(40, -74);
   final FirebaseUser _user;
+  final geolocatorService = GeoLocatorService();
 
   _HomePageState(this._user);
 
@@ -53,7 +55,7 @@ class _HomePageState extends State<HomePage>
   @override
   void didChangeDependencies() {
     Position currentLocation = Provider.of<Position>(context, listen: true);
-    
+
     source_location = (currentLocation == null) ? LatLng(0, 0) : LatLng(currentLocation.latitude, currentLocation.longitude);
     _center = source_location;
     _markers = {
@@ -62,14 +64,14 @@ class _HomePageState extends State<HomePage>
         position: source_location,
       )
     };
-    
+
     super.didChangeDependencies();
   }
 
   @override
   void initState() {
     super.initState();
-    // _setSourceLocation();
+    //source_location = Provider.of<Position>(context);
   }
 
   String currentProfilePicture = "";
@@ -149,6 +151,8 @@ class _HomePageState extends State<HomePage>
   PanelController _panelController = new PanelController();
   TextEditingController _textEditingController = new TextEditingController();
 
+
+
   @override
   Widget build(BuildContext context) {
     print("building page");
@@ -158,7 +162,7 @@ class _HomePageState extends State<HomePage>
     /*
     Position currentLocation = Provider.of<Position>(context);
     print("currentLocation: " + currentLocation.latitude.toString() + ", " + currentLocation.longitude.toString() + ". " + currentLocation.accuracy.toString());
-    */ 
+    */
 
     BorderRadiusGeometry radius = const BorderRadius.only(
       topLeft: Radius.circular(24.0),
