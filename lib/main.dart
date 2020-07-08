@@ -14,7 +14,6 @@ Future<Null> main() async {
   runApp(new MyApp());
 }
 
-
 class MyApp extends StatelessWidget {
   final GeoLocatorService geoLocatorService = GeoLocatorService();
 
@@ -23,8 +22,11 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         FutureProvider(
-          create: (context) => geolocatorService.getPosition(),
+          create: (context) => geoLocatorService.getCoords(),
         ),
+        StreamProvider(
+          create: (context) => geoLocatorService.trackLocation(),
+        )
       ],
       child: new MaterialApp(
         title: "Runr",
