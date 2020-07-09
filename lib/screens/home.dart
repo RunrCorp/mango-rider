@@ -251,7 +251,7 @@ class HomePage extends StatelessWidget {
                     border: OutlineInputBorder(
                       borderSide: BorderSide.none,
                       borderRadius: const BorderRadius.all(
-                        const Radius.circular(t),
+                        const Radius.circular(24),
                       ),
                     ),
                     fillColor: Color.fromRGBO(234, 234, 234, 1),
