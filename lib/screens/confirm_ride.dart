@@ -4,6 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:mango/services/bitmap_descriptor_service.dart';
+import 'package:mango/services/geolocation_service.dart';
+import 'package:provider/provider.dart';
 
 const googleAPIKey = "AIzaSyA7OoEiQjyJd35kPT1NWR8WpvbJS-FpdC8";
 const double CAMERA_ZOOM = 15;
@@ -23,7 +26,7 @@ class ConfirmRidePage extends StatefulWidget {
     print(source_location);
     print("constructor finished");
   }
-  @override
+
   _ConfirmRidePageState createState() => _ConfirmRidePageState();
 }
 
@@ -37,6 +40,11 @@ class _ConfirmRidePageState extends State<ConfirmRidePage> {
 
   BitmapDescriptor sourceIcon;
   BitmapDescriptor destinationIcon;
+
+  final BitmapDescriptorService bitmapDescriptorService =
+      new BitmapDescriptorService();
+
+  final GeoLocatorService geoLocatorService = GeoLocatorService();
 
   final GlobalKey<ScaffoldState> _scaffoldState =
       new GlobalKey<ScaffoldState>();
@@ -66,16 +74,27 @@ class _ConfirmRidePageState extends State<ConfirmRidePage> {
       appBar: new AppBar(
         title: Text("Confirm Ride"),
       ),
-      body: GoogleMap(
-          zoomControlsEnabled: true,
-          myLocationEnabled: true,
-          compassEnabled: true,
-          tiltGesturesEnabled: false,
-          markers: _markers,
-          polylines: _polylines,
-          mapType: MapType.normal,
-          initialCameraPosition: initialLocation,
-          onMapCreated: onMapCreated),
+      body: FutureProvider<Set<Polyline>>(create: (_) {
+        print('CALLING FUTURE');
+        return geoLocatorService.setPolylines(source_location, dest_location);
+      }, child: Consumer<Set<Polyline>>(builder: (_, value, __) {
+        print("Entered consumer");
+        print(value);
+        Widget map = GoogleMap(
+            zoomControlsEnabled: true,
+            myLocationEnabled: true,
+            compassEnabled: true,
+            tiltGesturesEnabled: false,
+            markers: _markers,
+            polylines: value,
+            mapType: MapType.normal,
+            initialCameraPosition: initialLocation,
+            onMapCreated: onMapCreated);
+        if (value != null) {
+          _setMapFitToTour(value);
+        }
+        return map;
+      })),
       floatingActionButton: Container(
         margin: const EdgeInsets.only(bottom: 32.0),
         child: FloatingActionButton(
@@ -99,8 +118,8 @@ class _ConfirmRidePageState extends State<ConfirmRidePage> {
   void onMapCreated(GoogleMapController controller) {
     _controller.complete(controller);
     mapController = controller;
-    setMapPins();
-    setPolylines();
+      setMapPins();
+//    setPolylines();
   }
 
   void setMapPins() {
@@ -120,30 +139,33 @@ class _ConfirmRidePageState extends State<ConfirmRidePage> {
     });
   }
 
-  setPolylines() async {
-    List<PointLatLng> result = await polylinePoints?.getRouteBetweenCoordinates(
-        googleAPIKey,
-        source_location.latitude,
-        source_location.longitude,
-        dest_location.latitude,
-        dest_location.longitude);
-    if (result.isNotEmpty) {
-      result.forEach((PointLatLng point) {
-        polylineCoordinates.add(LatLng(point.latitude, point.longitude));
-      });
-    }
-    setState(() {
-      Polyline polyline = Polyline(
-          polylineId: PolylineId('poly'),
-          color: Theme.of(context).primaryColor,
-          points: polylineCoordinates);
-
-      _polylines.add(polyline);
-      _setMapFitToTour(_polylines);
-    });
-  }
+//  setPolylines() async {
+//    List<PointLatLng> result = await polylinePoints?.getRouteBetweenCoordinates(
+//        googleAPIKey,
+//        source_location.latitude,
+//        source_location.longitude,
+//        dest_location.latitude,
+//        dest_location.longitude);
+//    if (result.isNotEmpty) {
+//      result.forEach((PointLatLng point) {
+//        polylineCoordinates.add(LatLng(point.latitude, point.longitude));
+//      });
+//    }
+//    setState(() {
+//      Polyline polyline = Polyline(
+//          polylineId: PolylineId('poly'),
+//          color: Theme.of(context).primaryColor,
+//          points: polylineCoordinates);
+//
+//      _polylines.add(polyline);
+//      _setMapFitToTour(_polylines);
+//    });
+//  }
 
   void _setMapFitToTour(Set<Polyline> p) {
+    if (p.isEmpty) {
+      return;
+    }
     double minLat = p.first.points.first.latitude;
     double minLong = p.first.points.first.longitude;
     double maxLat = p.first.points.first.latitude;
