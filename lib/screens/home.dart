@@ -12,59 +12,43 @@ import 'package:mango/models/location.dart';
 import 'package:mango/screens/confirm_ride.dart';
 import 'package:mango/screens/order_history.dart';
 import 'package:mango/screens/settings.dart';
+import 'package:mango/services/geolocation_service.dart';
+import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 import 'current_offers.dart';
 
-class HomePage extends StatefulWidget {
-//  final List<CameraDescription> cameras;
-//  HomePage({this.cameras});
-
+class HomePage extends StatelessWidget {
   final FirebaseUser _user;
 
   HomePage(this._user);
 
-  @override
-  _HomePageState createState() => new _HomePageState(_user);
-}
-
-class _HomePageState extends State<HomePage>
-    with SingleTickerProviderStateMixin {
   GoogleMapController mapController;
   GoogleMapsPlaces _places =
       GoogleMapsPlaces(apiKey: "AIzaSyA7OoEiQjyJd35kPT1NWR8WpvbJS-FpdC8");
 
+  Set<Marker> _markers = {};
+
   LatLng source_location;
   LatLng _center = LatLng(40, -74);
-  final FirebaseUser _user;
-
-  _HomePageState(this._user);
+  final geolocatorService = GeoLocatorService();
 
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
     setMapPins();
     print("When the map was created:");
     print(_center);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _setSourceLocation();
+    //mapController.
   }
 
   String currentProfilePicture = "";
-
-  String otherProfilePicture =
-      "http://www.jacklee.us/static/media/potato.7dedc136.png";
+  String otherProfilePicture = "";
 
   void editPicture() {
     print("Tapped here to edit picture!");
     String temp = currentProfilePicture;
-    setState(() {
-      currentProfilePicture = otherProfilePicture;
-      otherProfilePicture = temp;
-    });
+    currentProfilePicture = otherProfilePicture;
+    otherProfilePicture = temp;
   }
 
   Widget _buildSuggestions() {
@@ -131,13 +115,24 @@ class _HomePageState extends State<HomePage>
   PanelController _panelController = new PanelController();
   TextEditingController _textEditingController = new TextEditingController();
 
-  Set<Marker> _markers = {};
-
   @override
   Widget build(BuildContext context) {
     print("building page");
     print("center: ");
     print(_center);
+
+    Position currentLocation = Provider.of<Position>(context, listen: true);
+    source_location = (currentLocation == null)
+        ? LatLng(0, 0)
+        : LatLng(currentLocation.latitude, currentLocation.longitude);
+    _center = source_location;
+    _markers = {
+      Marker(
+        markerId: MarkerId('sourcePin'),
+        position: source_location,
+      )
+    };
+
     BorderRadiusGeometry radius = const BorderRadius.only(
       topLeft: Radius.circular(24.0),
       topRight: Radius.circular(24.0),
@@ -179,7 +174,8 @@ class _HomePageState extends State<HomePage>
                 onTap: () {
                   Navigator.of(context).pop();
                   Navigator.of(context).push(new MaterialPageRoute(
-                      builder: (BuildContext context) => new OrderHistoryPage()));
+                      builder: (BuildContext context) =>
+                          new OrderHistoryPage()));
                 }),
             new ListTile(
                 title: new Text("Current Offers"),
@@ -246,7 +242,7 @@ class _HomePageState extends State<HomePage>
                   );
                   print(
                       "Prediction has been received, now displaying prediction");
-                  displayPrediction(p);
+                  displayPrediction(p, context);
                 },
                 decoration: InputDecoration(
                     contentPadding: EdgeInsets.only(left: 10),
@@ -271,36 +267,30 @@ class _HomePageState extends State<HomePage>
             ),
           ]),
         ),
-//        collapsed: Container(
-//          child: Center(r
-//            child: Text(
-//              "Hey ${_user.displayName}!",
-//              style: TextStyle(fontSize: 30),
-//            ),
-//          ),
-//        ),
-        body: GoogleMap(
-          onTap: (_) {
-            FocusScope.of(context).unfocus();
-            if (_panelController.isPanelOpen) {
-              _panelController.close();
-            }
-          },
-          zoomControlsEnabled: true,
-          myLocationButtonEnabled: true,
-          markers: _markers,
-          onMapCreated: _onMapCreated,
-          initialCameraPosition: CameraPosition(
-            target: _center,
-            zoom: 15.0,
-          ),
-        ),
+        body: (currentLocation != null)
+            ? GoogleMap(
+                onTap: (_) {
+                  FocusScope.of(context).unfocus();
+                  if (_panelController.isPanelOpen) {
+                    _panelController.close();
+                  }
+                },
+                zoomControlsEnabled: true,
+                myLocationButtonEnabled: true,
+                markers: _markers,
+                onMapCreated: _onMapCreated,
+                initialCameraPosition: CameraPosition(
+                  target: _center,
+                  zoom: 15.0,
+                ),
+              )
+            : CircularProgressIndicator(),
         borderRadius: radius,
       ),
     );
   }
 
-  Future<Null> displayPrediction(Prediction p) async {
+  Future<Null> displayPrediction(Prediction p, context) async {
     print("Displaying Prediction");
     if (p != null) {
       PlacesDetailsResponse detail =
@@ -317,39 +307,16 @@ class _HomePageState extends State<HomePage>
               builder: (context) =>
                   ConfirmRidePage(source_location, lat, lng)));
       print(address);
-      print("\n\n\\nn\n\n\n\n\n\n\n\n\n\n\n\n\n");
+      print("/n");
       print(lat);
       print(lng);
     }
   }
 
-  void _setSourceLocation() async {
-    final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
-    await geolocator
-        .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
-        .then((Position position) {
-      source_location = LatLng(position.latitude, position.longitude);
-      _center = source_location;
-      mapController.moveCamera(CameraUpdate.newLatLng(_center));
-      setState(() {
-        _markers = {
-          Marker(
-            markerId: MarkerId('sourcePin'),
-            position: source_location,
-          )
-        };
-      });
-    }).catchError((e) => print(e));
-  }
-
   void setMapPins() {
-    setState(() {
-      // source pin
-      _markers.add(Marker(
-        markerId: MarkerId('sourcePin'),
-        position: _center,
-      ));
-      // destination pin
-    });
+    _markers.add(Marker(
+      markerId: MarkerId('sourcePin'),
+      position: _center,
+    ));
   }
 }
