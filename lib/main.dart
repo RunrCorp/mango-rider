@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mango/screens/login_page.dart';
 import 'package:mango/services/geolocation_service.dart';
 import 'package:provider/provider.dart';
@@ -26,7 +27,12 @@ class MyApp extends StatelessWidget {
         ),
         StreamProvider(
           create: (context) => geoLocatorService.trackLocation(),
-        )
+        ),
+        FutureProvider(
+          create: (context) => BitmapDescriptor.fromAssetImage(
+              ImageConfiguration(devicePixelRatio: 2.5),
+              'assets/driving_pin.png'),
+        ),
       ],
       child: new MaterialApp(
         title: "Runr",
