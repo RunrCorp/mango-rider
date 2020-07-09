@@ -8,15 +8,14 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 class GeoLocatorService {
   final geo = Geolocator();
 
-  //final googleAPIKey = "AIzaSyA7OoEiQjyJd35kPT1NWR8WpvbJS";
-  final googleAPIKey = "AIzaSyA7OoEiQjyJd35kPT1NWR8WpvbJS-FpdC8";
+  final googleAPIKey = "AIzaSyAs2CmJ8VjNg-BTpf_ohRJYyg0zLe1s5VM";
 
   Future<Position> getCoords() async {
     return await geo.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.bestForNavigation);
   }
 
-  Future<List<Placemark>> getAddrees(Position position) async {
+  Future<List<Placemark>> getAddress(Position position) async {
     return await geo.placemarkFromCoordinates(
         position.latitude, position.longitude);
   }
