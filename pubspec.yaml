@@ -81,6 +81,7 @@ flutter:
   #   - images/a_dot_ham.jpeg
   assets:
     - assets/runr.png
+    - assets/runr_no_circle.png
     - assets/mango.png
     - assets/missingmango.png
     - assets/baggins.png
