@@ -3,6 +3,7 @@ import 'package:badges/badges.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_config/flutter_config.dart'; // flutter_config
 import 'package:flutter_google_places/flutter_google_places.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:geolocator/geolocator.dart';
@@ -25,7 +26,7 @@ class HomePage extends StatelessWidget {
 
   GoogleMapController mapController;
   GoogleMapsPlaces _places =
-      GoogleMapsPlaces(apiKey: "AIzaSyA7OoEiQjyJd35kPT1NWR8WpvbJS-FpdC8");
+      GoogleMapsPlaces(apiKey: FlutterConfig.get('MAPS_API')); // flutter_config
 
   Set<Marker> _markers = {};
 
@@ -233,10 +234,10 @@ class HomePage extends StatelessWidget {
                   print("on tap function entered");
                   // show input autocomplete with selected mode
                   // then get the Prediction selected
-                  //AIzaSyAv3aGyislLlmnTLeL0O_ub-2IqilWke9Q
+                  //{{REDACTED API KEY WAS HERE}}
                   Prediction p = await PlacesAutocomplete.show(
                     context: context,
-                    apiKey: "AIzaSyA7OoEiQjyJd35kPT1NWR8WpvbJS-FpdC8",
+                    apiKey: FlutterConfig.get('MAPS_API'), // flutter_config
                     radius: 10000000,
                     onError: (response) => print(response.errorMessage),
                   );

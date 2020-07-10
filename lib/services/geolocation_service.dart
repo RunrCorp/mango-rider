@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_config/flutter_config.dart'; // flutter_config
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -8,7 +9,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 class GeoLocatorService {
   final geo = Geolocator();
 
-  final googleAPIKey = "AIzaSyAs2CmJ8VjNg-BTpf_ohRJYyg0zLe1s5VM";
+  final googleAPIKey = FlutterConfig.get('ROUTE_API'); // flutter_config
 
   Future<Position> getCoords() async {
     return await geo.getCurrentPosition(
