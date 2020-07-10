@@ -26,7 +26,7 @@ class HomePage extends StatelessWidget {
 
   GoogleMapController mapController;
   GoogleMapsPlaces _places =
-      GoogleMapsPlaces(apiKey: FlutterConfig.get('MAPS_API')); // flutter_config
+      GoogleMapsPlaces(apiKey: FlutterConfig.get('GOOGLE_MAPS_API_KEY')); // flutter_config
 
   Set<Marker> _markers = {};
 
@@ -237,7 +237,7 @@ class HomePage extends StatelessWidget {
                   //{{REDACTED API KEY WAS HERE}}
                   Prediction p = await PlacesAutocomplete.show(
                     context: context,
-                    apiKey: FlutterConfig.get('MAPS_API'), // flutter_config
+                    apiKey: FlutterConfig.get('GOOGLE_MAPS_API_KEY'), // flutter_config
                     radius: 10000000,
                     onError: (response) => print(response.errorMessage),
                   );

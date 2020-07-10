@@ -142,7 +142,7 @@ class _ConfirmRidePageState extends State<ConfirmRidePage> {
 
 //  setPolylines() async {
 //    List<PointLatLng> result = await polylinePoints?.getRouteBetweenCoordinates(
-//        FlutterConfig.get('MAPS_API'), // flutter_config
+//        FlutterConfig.get('GOOGLE_MAPS_API_KEY'), // flutter_config
 //        source_location.latitude,
 //        source_location.longitude,
 //        dest_location.latitude,
