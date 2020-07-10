@@ -9,8 +9,8 @@
 	<key>ANDROID_CLIENT_ID</key>
 	<string>423335283643-pl3351hdhcov9kuuogacob60j4see2ps.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
-	<string>AIzaSyASmpCB6Nm6WEM4NBJ5OwG1D1gM-Wp7x1s</string>
-	<key>GCM_SENDER_ID</key>
+	<string>AIzaSyASmpCB6Nm6WEM4NBJ5OwG1D1gM-Wp7x1s</string> <!-- flutter_config - - Also, check in google_services.json -> client.api_key.current_key -->
+	<key>GCM_SENDER_ID</key> 
 	<string>423335283643</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>

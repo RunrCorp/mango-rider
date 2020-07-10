@@ -1,17 +1,15 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_config/flutter_config.dart'; // flutter_config
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mango/screens/login_page.dart';
 import 'package:mango/services/geolocation_service.dart';
 import 'package:provider/provider.dart';
 
-//List<CameraDescription> cameras;
-//test push
-
 Future<Null> main() async {
+  await FlutterConfig.loadEnvVariables(); // flutter_config
   WidgetsFlutterBinding.ensureInitialized();
-//  cameras = await availableCameras();
   runApp(new MyApp());
 }
 

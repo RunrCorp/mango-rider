@@ -45,6 +45,6 @@
             android:value="2" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyA7OoEiQjyJd35kPT1NWR8WpvbJS-FpdC8"/>
+            android:value="@string/MAPS_API"/> <!-- flutter_config -->
     </application>
 </manifest>
