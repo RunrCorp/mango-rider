@@ -9,7 +9,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 class GeoLocatorService {
   final geo = Geolocator();
 
-  final googleAPIKey = FlutterConfig.get('ROUTE_API'); // flutter_config
+  final googleAPIKey = FlutterConfig.get('GOOGLE_MAPS_API_KEY'); // flutter_config
 
   Future<Position> getCoords() async {
     return await geo.getCurrentPosition(
