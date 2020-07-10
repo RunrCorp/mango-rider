@@ -8,8 +8,8 @@ import 'package:mango/services/geolocation_service.dart';
 import 'package:provider/provider.dart';
 
 Future<Null> main() async {
-  await FlutterConfig.loadEnvVariables(); // flutter_config
   WidgetsFlutterBinding.ensureInitialized();
+  await FlutterConfig.loadEnvVariables(); // flutter_config
   runApp(new MyApp());
 }
 
