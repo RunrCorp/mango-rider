@@ -284,7 +284,28 @@ class HomePage extends StatelessWidget {
                   zoom: 15.0,
                 ),
               )
-            : CircularProgressIndicator(),
+            : Center(
+            child: Stack(
+              children: [
+                Container(
+                  alignment: Alignment.center,
+                  child: SizedBox(
+                    height: 150,
+                    width: 150,
+                    child: CircularProgressIndicator()
+                  )
+                ),
+                Container(
+                  alignment: Alignment.center,
+                    child: SizedBox(
+                        height: 100,
+                        width: 100,
+                        child: Image.asset("assets/runr_no_circle.png")
+                    )
+                )
+              ]
+            )
+        ),
         borderRadius: radius,
       ),
     );
