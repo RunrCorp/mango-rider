@@ -25,7 +25,7 @@ class HomePage extends StatelessWidget {
 
   GoogleMapController mapController;
   GoogleMapsPlaces _places =
-      GoogleMapsPlaces(apiKey: "AIzaSyA7OoEiQjyJd35kPT1NWR8WpvbJS-FpdC8");
+      GoogleMapsPlaces(apiKey: "AIzaSyAs2CmJ8VjNg-BTpf_ohRJYyg0zLe1s5VM");
 
   Set<Marker> _markers = {};
 
@@ -68,7 +68,9 @@ class HomePage extends StatelessWidget {
               Expanded(
                 child: Container(
                   decoration: BoxDecoration(
-                    border: Border(bottom: BorderSide(color: Color.fromRGBO(0, 0, 0, .22), width: 2)),
+                    border: Border(
+                        bottom: BorderSide(
+                            color: Color.fromRGBO(0, 0, 0, .22), width: 2)),
                   ),
                   child: ListTile(
                     contentPadding: const EdgeInsets.all(3),
@@ -79,9 +81,9 @@ class HomePage extends StatelessWidget {
                     subtitle: Text(
                       locations[index].city +
                           ", " +
-                         locations[index].state +
-                         " " +
-                         locations[index].zipCode,
+                          locations[index].state +
+                          " " +
+                          locations[index].zipCode,
                     ),
                   ),
                 ),
@@ -233,10 +235,9 @@ class HomePage extends StatelessWidget {
                   print("on tap function entered");
                   // show input autocomplete with selected mode
                   // then get the Prediction selected
-                  //AIzaSyAv3aGyislLlmnTLeL0O_ub-2IqilWke9Q
                   Prediction p = await PlacesAutocomplete.show(
                     context: context,
-                    apiKey: "AIzaSyA7OoEiQjyJd35kPT1NWR8WpvbJS-FpdC8",
+                    apiKey: "AIzaSyAs2CmJ8VjNg-BTpf_ohRJYyg0zLe1s5VM",
                     radius: 10000000,
                     onError: (response) => print(response.errorMessage),
                   );
@@ -285,27 +286,20 @@ class HomePage extends StatelessWidget {
                 ),
               )
             : Center(
-            child: Stack(
-              children: [
+                child: Stack(children: [
                 Container(
-                  alignment: Alignment.center,
-                  child: SizedBox(
-                    height: 150,
-                    width: 150,
-                    child: CircularProgressIndicator()
-                  )
-                ),
+                    alignment: Alignment.center,
+                    child: SizedBox(
+                        height: 150,
+                        width: 150,
+                        child: CircularProgressIndicator())),
                 Container(
-                  alignment: Alignment.center,
+                    alignment: Alignment.center,
                     child: SizedBox(
                         height: 100,
                         width: 100,
-                        child: Image.asset("assets/runr_no_circle.png")
-                    )
-                )
-              ]
-            )
-        ),
+                        child: Image.asset("assets/runr_no_circle.png")))
+              ])),
         borderRadius: radius,
       ),
     );
