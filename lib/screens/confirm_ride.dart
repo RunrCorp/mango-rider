@@ -8,7 +8,7 @@ import 'package:mango/services/bitmap_descriptor_service.dart';
 import 'package:mango/services/geolocation_service.dart';
 import 'package:provider/provider.dart';
 
-const googleAPIKey = "AIzaSyA7OoEiQjyJd35kPT1NWR8WpvbJS-FpdC8";
+const googleAPIKey = "AIzaSyAs2CmJ8VjNg-BTpf_ohRJYyg0zLe1s5VM";
 const double CAMERA_ZOOM = 15;
 const double CAMERA_TILT = 0;
 const double CAMERA_BEARING = 30;
@@ -118,7 +118,7 @@ class _ConfirmRidePageState extends State<ConfirmRidePage> {
   void onMapCreated(GoogleMapController controller) {
     _controller.complete(controller);
     mapController = controller;
-      setMapPins();
+    setMapPins();
 //    setPolylines();
   }
 
