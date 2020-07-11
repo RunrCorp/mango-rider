@@ -8,7 +8,7 @@ import 'package:mango/services/bitmap_descriptor_service.dart';
 import 'package:mango/services/geolocation_service.dart';
 import 'package:provider/provider.dart';
 
-const googleAPIKey = "AIzaSyAs2CmJ8VjNg-BTpf_ohRJYyg0zLe1s5VM";
+// const googleAPIKey = "";
 const double CAMERA_ZOOM = 15;
 const double CAMERA_TILT = 0;
 const double CAMERA_BEARING = 30;

@@ -15,6 +15,7 @@ import 'package:mango/screens/settings.dart';
 import 'package:mango/services/geolocation_service.dart';
 import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:flutter_config/flutter_config.dart'; // flutter_config
 
 import 'current_offers.dart';
 
@@ -24,8 +25,8 @@ class HomePage extends StatelessWidget {
   HomePage(this._user);
 
   GoogleMapController mapController;
-  GoogleMapsPlaces _places =
-      GoogleMapsPlaces(apiKey: "AIzaSyAs2CmJ8VjNg-BTpf_ohRJYyg0zLe1s5VM");
+  GoogleMapsPlaces _places = GoogleMapsPlaces(
+      apiKey: FlutterConfig.get('GOOGLE_MAPS_API_KEY')); // flutter_config
 
   Set<Marker> _markers = {};
 
@@ -237,7 +238,7 @@ class HomePage extends StatelessWidget {
                   // then get the Prediction selected
                   Prediction p = await PlacesAutocomplete.show(
                     context: context,
-                    apiKey: "AIzaSyAs2CmJ8VjNg-BTpf_ohRJYyg0zLe1s5VM",
+                    apiKey: FlutterConfig.get('GOOGLE_MAPS_API_KEY'),
                     radius: 10000000,
                     onError: (response) => print(response.errorMessage),
                   );
