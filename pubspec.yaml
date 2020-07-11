@@ -48,6 +48,7 @@ dependencies:
   google_sign_in: ^4.0.4
   badges: ^1.1.1
   settings_ui: ^0.3.0
+  flutter_config: 1.0.5
 
 
 dev_dependencies:
