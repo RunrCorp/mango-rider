@@ -1,0 +1,3 @@
+[filter "iosgooglemapsapikey"]
+    smudge=sed 's/googleMapsAPIKey = .*/googleMapsAPIKey = "GOOGLE_MAPS_API_KEY"/'
+    clean=sed 's/googleMapsAPIKey = .*/googleMapsAPIKey = "GOOGLE_MAPS_API_KEY"/'
