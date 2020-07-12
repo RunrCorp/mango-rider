@@ -19,7 +19,7 @@ echo
 # -- Set custom local .gitconfig --
 
 # Set filter options
-git config --local filter.iosgooglemapsapikey.smudge "sed \"s/googleMapsAPIKey = .*/googleMapsAPIKey = \"$GOOGLE_MAPS_API_KEY\"/\""
+git config --local filter.iosgooglemapsapikey.smudge "sed 's/googleMapsAPIKey = .*/googleMapsAPIKey = \"$GOOGLE_MAPS_API_KEY\"/'"
 git config --local filter.iosgooglemapsapikey.clean "sed 's/googleMapsAPIKey = .*/googleMapsAPIKey = GOOGLE_MAPS_API_KEY/'"
 
 printf "${GREEN}Git config was successfully set.${NC}"
