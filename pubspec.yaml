@@ -97,6 +97,8 @@ flutter:
     - assets/prediction_pin.png
     - assets/pullup_rectangle.png
     - assets/fonts/Quicksand-Bold.ttf
+    - assets/terms.txt
+    - assets/licenses.txt
     # These fonts are unused, but are here in case we need them
     # - assets/fonts/Quicksand-Light.ttf
     # - assets/fonts/Quicksand-Regular.ttf

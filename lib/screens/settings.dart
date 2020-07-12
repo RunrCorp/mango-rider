@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:settings_ui/settings_ui.dart';
 
 import 'languages_screen.dart';
+import 'terms_screen.dart';
+import 'licenses_screen.dart';
 
-
-class SettingsPage extends StatefulWidget{
+class SettingsPage extends StatefulWidget {
   @override
   _SettingsPageState createState() => _SettingsPageState();
 }
@@ -84,10 +85,21 @@ class _SettingsPageState extends State<SettingsPage> {
             title: 'Misc',
             tiles: [
               SettingsTile(
-                  title: 'Terms of Service', leading: Icon(Icons.description)),
+                title: 'Terms of Service',
+                leading: Icon(Icons.description),
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (BuildContext context) => TermsScreen()));
+                },
+              ),
               SettingsTile(
-                  title: 'Open source licenses',
-                  leading: Icon(Icons.collections_bookmark)),
+                title: 'Open source licenses',
+                leading: Icon(Icons.collections_bookmark),
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (BuildContext context) => LicensesScreen()));
+                },
+              )
             ],
           )
         ],
