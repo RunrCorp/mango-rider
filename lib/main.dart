@@ -1,17 +1,16 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_config/flutter_config.dart'; // flutter_config
 import 'package:mango/screens/home.dart';
 import 'package:mango/screens/login_page.dart';
 import 'package:mango/services/geolocation_service.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_config/flutter_config.dart'; // flutter_config
 
 Future<Null> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   await FlutterConfig.loadEnvVariables(); // flutter_config
   runApp(new MyApp());
 }
@@ -28,11 +27,6 @@ class MyApp extends StatelessWidget {
         ),
         StreamProvider(
           create: (context) => geoLocatorService.trackLocation(),
-        ),
-        FutureProvider(
-          create: (context) => BitmapDescriptor.fromAssetImage(
-              ImageConfiguration(devicePixelRatio: 2.5),
-              'assets/driving_pin.png'),
         ),
         FutureProvider<FirebaseUser>(
           create: (context) => FirebaseAuth.instance.currentUser(),

@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:mango/services/bitmap_descriptor_service.dart';
 import 'package:mango/services/geolocation_service.dart';
 import 'package:provider/provider.dart';
 
@@ -40,9 +39,6 @@ class _ConfirmRidePageState extends State<ConfirmRidePage> {
 
   BitmapDescriptor sourceIcon;
   BitmapDescriptor destinationIcon;
-
-  final BitmapDescriptorService bitmapDescriptorService =
-      new BitmapDescriptorService();
 
   final GeoLocatorService geoLocatorService = GeoLocatorService();
 
