@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:mango/screens/home.dart';
 import 'package:mango/screens/login_page.dart';
 import 'package:mango/services/geolocation_service.dart';
 import 'package:provider/provider.dart';
@@ -32,6 +34,9 @@ class MyApp extends StatelessWidget {
               ImageConfiguration(devicePixelRatio: 2.5),
               'assets/driving_pin.png'),
         ),
+        FutureProvider<FirebaseUser>(
+          create: (context) => FirebaseAuth.instance.currentUser(),
+        ),
       ],
       child: new MaterialApp(
         title: "Runr",
@@ -48,9 +53,23 @@ class MyApp extends StatelessWidget {
           brightness: Brightness.dark,
         ),
         debugShowCheckedModeBanner: false,
-        home: new LoginPage(),
+        home: _handleWindowDisplay(),
       ),
     );
   }
+} //delta
+
+Widget _handleWindowDisplay() {
+  return FutureBuilder(
+    future: FirebaseAuth.instance.currentUser(),
+    builder: (context, snapshot) {
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return Center(child: LinearProgressIndicator());
+      } else if (snapshot.hasData && snapshot.data != null) {
+        return HomePage(snapshot.data); // clean and elegant solution
+      } else {
+        return LoginPage();
+      }
+    },
+  );
 }
-//delta
