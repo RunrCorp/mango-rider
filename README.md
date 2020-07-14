@@ -5,7 +5,7 @@
 [![All Contributors](https://img.shields.io/github/contributors/davidionita/mango.svg)](https://github.com/davidionita/mango/graphs/contributors/)
 [![GitHub closed issues](https://img.shields.io/github/issues-closed/davidionita/mango.svg)](https://github.com/davidionita/mango/issues)
 [![Flutter](https://img.shields.io/badge/framework-Flutter-blue)](https://flutter.dev/)
-[![Platforms supported](https://img.shields.io/badge/platform-ios%20%3E%3D%2010.0%20%7C%20android%20%20%3E%3D%2016-lightgrey)]()
+[![Platforms supported](https://img.shields.io/badge/platform-ios%20%3E%3D%2010.0%20%7C%20android%20%20%3E%3D%204.1-lightgrey)]()
 [![Discord](https://img.shields.io/discord/691477276453240863.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/XEyGCkb)
 [![Star on GitHub](https://img.shields.io/github/stars/davidionita/mango.svg?style=social)](https://github.com/davidionita/mango/stargazers)
 
