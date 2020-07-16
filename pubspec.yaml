@@ -29,7 +29,7 @@ dependencies:
   google_maps_flutter: ^0.5.11
   # camera: ^0.5.5 
   sliding_up_panel: ^1.0.2
-  flutter_google_places: ^0.1.4
+  flutter_google_places: any
   geocoder: ^0.2.1
   flutter_polyline_points: ^0.1.0
   geolocator: ^5.1.3
@@ -49,7 +49,7 @@ dependencies:
   badges: ^1.1.1
   settings_ui: ^0.3.0
   flutter_config: 1.0.5
-  geoflutterfire: ^2.1.0
+  geoflutterfire: any
 
 
 dev_dependencies:
