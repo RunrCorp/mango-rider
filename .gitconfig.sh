@@ -10,7 +10,7 @@ printf "${GREEN}----${NC}"
 echo
 # Set .env variables
 export $(grep -v '^#' .env | xargs -0)
-if [ -z ${GOOGLE_MAPS_API_KEY+x} ]
+if [ -z ${GOOGLE_MAPS_API_KEY+x} ] || [ -z ${FIREBASE_IOS+x}  ]
 then
     printf "${GREEN}----${NC}"
     echo
@@ -37,17 +37,25 @@ fi
 printf "${GREEN}GOOGLE_MAPS_API_KEY=${GOOGLE_MAPS_API_KEY}${NC}"
 echo
 
+printf "${GREEN}FIREBASE_IOS=${FIREBASE_IOS}${NC}"
+echo
+
 printf "${GREEN}----${NC}"
 echo
 
-# Inserts API key into file
+# Inserts API keys into file
 sed -i '' 's/googleMapsAPIKey = .*/googleMapsAPIKey = "'${GOOGLE_MAPS_API_KEY}'"/' 'ios/Runner/AppDelegate.swift'
+
+sed -i '' 's~<!--iosfirebaseios--> <string>.*~<!--iosfirebaseios--> <string>'${FIREBASE_IOS}'</string>~' 'ios/Runner/GoogleService-Info.plist'
 
 # -- Set custom local .gitconfig --
 
 # Set filter options
 git config --local filter.iosgooglemapsapikey.smudge "sed 's/googleMapsAPIKey = .*/googleMapsAPIKey = \"$GOOGLE_MAPS_API_KEY\"/'"
 git config --local filter.iosgooglemapsapikey.clean "sed 's/googleMapsAPIKey = .*/googleMapsAPIKey = GOOGLE_MAPS_API_KEY/'"
+
+git config --local filter.iosfirebaseios.smudge "sed 's~<!--iosfirebaseios--> <string>.*~<!--iosfirebaseios--> <string>$FIREBASE_IOS</string>~'"
+git config --local filter.iosfirebaseios.clean "sed 's~<!--iosfirebaseios--> <string>.*~<!--iosfirebaseios--> <string>FIREBASE_IO</string>~'"
 
 printf "${GREEN}Git config was successfully set.${NC}"
 echo

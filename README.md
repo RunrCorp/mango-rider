@@ -1,6 +1,6 @@
 ![](./assets/mango.jpg)
 
-# ***mango***
+# ***mango-rider***
 [![GitHub labels](https://img.shields.io/github/labels/atom/atom/help-wanted)](mailto:runrteam@gmail.com)
 [![All Contributors](https://img.shields.io/github/contributors/davidionita/mango.svg)](https://github.com/davidionita/mango/graphs/contributors/)
 [![GitHub closed issues](https://img.shields.io/github/issues-closed/davidionita/mango.svg)](https://github.com/davidionita/mango/issues)
@@ -10,6 +10,8 @@
 [![Star on GitHub](https://img.shields.io/github/stars/davidionita/mango.svg?style=social)](https://github.com/davidionita/mango/stargazers)
 
 A new type of ridesharing app.
+
+This is the rider-only app.
 
 If you would like to join the team, please contact one of the contributors *or* email [**runrteam@gmail.com**](mailto:runrteam@gmail.com).
 

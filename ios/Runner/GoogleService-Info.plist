@@ -3,36 +3,36 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>423335283643-2n76nt5u3tv3c7ddeg5pfgrvf70ckfgo.apps.googleusercontent.com</string>
+	<string>816779721409-bqfg1c7s1fqocsm3l9rvt180lss06tlk.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.423335283643-2n76nt5u3tv3c7ddeg5pfgrvf70ckfgo</string>
+	<string>com.googleusercontent.apps.816779721409-bqfg1c7s1fqocsm3l9rvt180lss06tlk</string>
 	<key>ANDROID_CLIENT_ID</key>
-	<string>423335283643-pl3351hdhcov9kuuogacob60j4see2ps.apps.googleusercontent.com</string>
+	<string>816779721409-fp4uheldlbq7tvmc7q011osbma269nfc.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
-	<string>AIzaSyASmpCB6Nm6WEM4NBJ5OwG1D1gM-Wp7x1s</string>
+<!--iosfirebaseios--> <string>FIREBASE_IO</string>
 	<key>GCM_SENDER_ID</key>
-	<string>423335283643</string>
+	<string>816779721409</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>dev.ionita.mango</string>
+	<string>com.mango.rider.ios</string>
 	<key>PROJECT_ID</key>
-	<string>mango-47065</string>
+	<string>mango-c3df9</string>
 	<key>STORAGE_BUCKET</key>
-	<string>mango-47065.appspot.com</string>
+	<string>mango-c3df9.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
-	<false></false>
+	<false/>
 	<key>IS_ANALYTICS_ENABLED</key>
-	<false></false>
+	<false/>
 	<key>IS_APPINVITE_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>IS_GCM_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>IS_SIGNIN_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:423335283643:ios:6d2ff024345e9c2578d29e</string>
+	<string>1:816779721409:ios:c0024479c8f03ef3ef3240</string>
 	<key>DATABASE_URL</key>
-	<string>https://mango-47065.firebaseio.com</string>
+	<string>https://mango-c3df9.firebaseio.com</string>
 </dict>
 </plist>
