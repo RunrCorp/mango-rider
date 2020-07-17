@@ -58,7 +58,7 @@ Widget _handleWindowDisplay() {
     future: FirebaseAuth.instance.currentUser(),
     builder: (context, snapshot) {
       if (snapshot.connectionState == ConnectionState.waiting) {
-        return Center(child: LinearProgressIndicator());
+        return Scaffold(body: Center(child: LinearProgressIndicator()));
       } else if (snapshot.hasData && snapshot.data != null) {
         return HomePage(snapshot.data); // clean and elegant solution
       } else {

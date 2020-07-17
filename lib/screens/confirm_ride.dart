@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mango/services/geolocation_service.dart';
 import 'package:provider/provider.dart';
@@ -11,12 +12,13 @@ import 'package:provider/provider.dart';
 const double CAMERA_ZOOM = 15;
 const double CAMERA_TILT = 0;
 const double CAMERA_BEARING = 30;
-LatLng source_location; //= LatLng(42.7477863, -71.1699932);
-LatLng dest_location; // = LatLng(42.6871386, -71.2143403);
+// = LatLng(42.6871386, -71.2143403);
 
 class ConfirmRidePage extends StatefulWidget {
   num endLat;
   num endLong;
+  LatLng source_location; //= LatLng(42.7477863, -71.1699932);
+  LatLng dest_location;
 
   ConfirmRidePage(@required original_location, @required this.endLat,
       @required this.endLong) {
@@ -45,11 +47,18 @@ class _ConfirmRidePageState extends State<ConfirmRidePage> {
   final GlobalKey<ScaffoldState> _scaffoldState =
       new GlobalKey<ScaffoldState>();
 
+  String confirmLocation;
+  String confirmDestination;
+  String price;
+
   void initState() {
     print('initializing state');
     super.initState();
     setSourceAndDestinationIcons();
   }
+
+//  TextEditingController controller = TextEditingController();
+//  controller.
 
   void setSourceAndDestinationIcons() async {
     sourceIcon = await BitmapDescriptor.fromAssetImage(
@@ -64,33 +73,68 @@ class _ConfirmRidePageState extends State<ConfirmRidePage> {
         zoom: CAMERA_ZOOM,
         bearing: CAMERA_BEARING,
         tilt: CAMERA_TILT,
-        target: source_location);
+        target: widget.source_location);
     return Scaffold(
       key: _scaffoldState,
       appBar: new AppBar(
         title: Text("Confirm Ride"),
       ),
-      body: FutureProvider<Set<Polyline>>(create: (_) {
-        print('CALLING FUTURE');
-        return geoLocatorService.setPolylines(source_location, dest_location);
-      }, child: Consumer<Set<Polyline>>(builder: (_, value, __) {
-        print("Entered consumer");
-        print(value);
-        Widget map = GoogleMap(
-            zoomControlsEnabled: true,
-            myLocationEnabled: true,
-            compassEnabled: true,
-            tiltGesturesEnabled: false,
-            markers: _markers,
-            polylines: value,
-            mapType: MapType.normal,
-            initialCameraPosition: initialLocation,
-            onMapCreated: onMapCreated);
-        if (value != null) {
-          _setMapFitToTour(value);
-        }
-        return map;
-      })),
+      body: FutureProvider(
+        create: (_) => geoLocatorService.getTwoAddresses(
+            Position(
+                latitude: widget.source_location.latitude,
+                longitude: widget.source_location.longitude),
+            Position(
+                latitude: widget.dest_location.latitude,
+                longitude: widget.dest_location.longitude)),
+        child: Consumer<List<Placemark>>(
+          builder: (_, value, __) {
+            Placemark startingAddress = (value != null) ? value[0] : null;
+            Placemark endingAddress = (value != null) ? value[1] : null;
+            return Column(
+              children: [
+                TextField(
+                  decoration: InputDecoration(
+                      hintText: (startingAddress == null)
+                          ? ""
+                          : startingAddress.toString()),
+                ),
+                TextField(
+                  decoration: InputDecoration(
+                      hintText: (endingAddress == null)
+                          ? ""
+                          : endingAddress.toString()),
+                ),
+                TextField(),
+                FutureProvider<Set<Polyline>>(create: (_) {
+                  print('CALLING FUTURE');
+                  return geoLocatorService.setPolylines(
+                      widget.source_location, widget.dest_location);
+                }, child: Consumer<Set<Polyline>>(builder: (_, value, __) {
+                  print("Entered consumer");
+                  print(value);
+                  Widget map = SizedBox(
+                      height: 500,
+                      child: GoogleMap(
+                          zoomControlsEnabled: true,
+                          myLocationEnabled: true,
+                          compassEnabled: true,
+                          tiltGesturesEnabled: false,
+                          markers: _markers,
+                          polylines: value,
+                          mapType: MapType.normal,
+                          initialCameraPosition: initialLocation,
+                          onMapCreated: onMapCreated));
+                  if (value != null) {
+                    _setMapFitToTour(value);
+                  }
+                  return map;
+                }))
+              ],
+            );
+          },
+        ),
+      ),
       floatingActionButton: Container(
         margin: const EdgeInsets.only(bottom: 32.0),
         child: FloatingActionButton(
@@ -113,7 +157,9 @@ class _ConfirmRidePageState extends State<ConfirmRidePage> {
 
   void onMapCreated(GoogleMapController controller) {
     _controller.complete(controller);
+
     mapController = controller;
+
     setMapPins();
 //    setPolylines();
   }
@@ -123,13 +169,13 @@ class _ConfirmRidePageState extends State<ConfirmRidePage> {
       // source pin
       _markers.add(Marker(
         markerId: MarkerId('sourcePin'),
-        position: source_location,
+        position: widget.source_location,
         icon: sourceIcon,
       ));
       // destination pin
       _markers.add(Marker(
         markerId: MarkerId('destPin'),
-        position: dest_location,
+        position: widget.dest_location,
         icon: destinationIcon,
       ));
     });
@@ -159,7 +205,7 @@ class _ConfirmRidePageState extends State<ConfirmRidePage> {
 //  }
 
   void _setMapFitToTour(Set<Polyline> p) {
-    if (p.isEmpty) {
+    if (p.isEmpty || mapController == null) {
       return;
     }
     double minLat = p.first.points.first.latitude;
@@ -174,10 +220,11 @@ class _ConfirmRidePageState extends State<ConfirmRidePage> {
         if (point.longitude > maxLong) maxLong = point.longitude;
       });
     });
+
     mapController.moveCamera(CameraUpdate.newLatLngBounds(
         LatLngBounds(
-            southwest: LatLng(minLat, minLong),
-            northeast: LatLng(maxLat, maxLong)),
+            southwest: LatLng(minLat - 50, minLong - 50),
+            northeast: LatLng(maxLat + 50, maxLong + 50)),
         20));
   }
 }

@@ -3,6 +3,7 @@ import 'package:badges/badges.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_config/flutter_config.dart'; // flutter_config
 import 'package:flutter_google_places/flutter_google_places.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:geolocator/geolocator.dart';
@@ -15,7 +16,6 @@ import 'package:mango/screens/settings.dart';
 import 'package:mango/services/geolocation_service.dart';
 import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
-import 'package:flutter_config/flutter_config.dart'; // flutter_config
 
 import 'current_offers.dart';
 
@@ -312,11 +312,14 @@ class HomePage extends StatelessWidget {
       PlacesDetailsResponse detail =
           await _places.getDetailsByPlaceId(p.placeId);
 
+      print("got detail");
+
       var placeId = p.placeId;
       double lat = detail.result.geometry.location.lat;
       double lng = detail.result.geometry.location.lng;
 
       var address = await Geocoder.local.findAddressesFromQuery(p.description);
+
       Navigator.push(
           context,
           MaterialPageRoute(

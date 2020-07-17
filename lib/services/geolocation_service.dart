@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_config/flutter_config.dart'; // flutter_config
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:flutter_config/flutter_config.dart'; // flutter_config
 
 class GeoLocatorService {
   final geo = Geolocator();
@@ -20,6 +20,17 @@ class GeoLocatorService {
   Future<List<Placemark>> getAddress(Position position) async {
     return await geo.placemarkFromCoordinates(
         position.latitude, position.longitude);
+  }
+
+  Future<List<Placemark>> getTwoAddresses(
+      Position positionOne, Position positionTwo) async {
+    List<Placemark> firstAddress = await geo.placemarkFromCoordinates(
+        positionOne.latitude, positionOne.longitude);
+    Placemark address = firstAddress[0];
+    List<Placemark> secondAddress = await geo.placemarkFromCoordinates(
+        positionTwo.latitude, positionTwo.longitude);
+    Placemark destination = secondAddress[0];
+    return [address, destination];
   }
 
   Stream<Position> trackLocation() {
