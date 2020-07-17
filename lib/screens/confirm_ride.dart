@@ -50,15 +50,18 @@ class _ConfirmRidePageState extends State<ConfirmRidePage> {
   String confirmLocation;
   String confirmDestination;
   String price;
+  TextEditingController _textControllerOne =
+      new TextEditingController(text: 'Initial value');
+  TextEditingController _textControllerTwo =
+      new TextEditingController(text: 'Initial value');
 
   void initState() {
     print('initializing state');
     super.initState();
     setSourceAndDestinationIcons();
+    _textControllerOne = new TextEditingController(text: 'Initial value');
+    _textControllerTwo = new TextEditingController(text: 'Initial value');
   }
-
-//  TextEditingController controller = TextEditingController();
-//  controller.
 
   void setSourceAndDestinationIcons() async {
     sourceIcon = await BitmapDescriptor.fromAssetImage(
@@ -75,6 +78,7 @@ class _ConfirmRidePageState extends State<ConfirmRidePage> {
         tilt: CAMERA_TILT,
         target: widget.source_location);
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       key: _scaffoldState,
       appBar: new AppBar(
         title: Text("Confirm Ride"),
@@ -91,19 +95,24 @@ class _ConfirmRidePageState extends State<ConfirmRidePage> {
           builder: (_, value, __) {
             Placemark startingAddress = (value != null) ? value[0] : null;
             Placemark endingAddress = (value != null) ? value[1] : null;
+            _textControllerOne = TextEditingController(
+                text: (startingAddress == null)
+                    ? ""
+                    : placemarkToAddress(startingAddress));
+            _textControllerTwo = TextEditingController(
+                text: (endingAddress == null)
+                    ? ""
+                    : placemarkToAddress(endingAddress));
+
             return Column(
               children: [
                 TextField(
-                  decoration: InputDecoration(
-                      hintText: (startingAddress == null)
-                          ? ""
-                          : startingAddress.toString()),
+                  controller: _textControllerOne,
+                  decoration: InputDecoration(hintText: "Starting Location"),
                 ),
                 TextField(
-                  decoration: InputDecoration(
-                      hintText: (endingAddress == null)
-                          ? ""
-                          : endingAddress.toString()),
+                  controller: _textControllerTwo,
+                  decoration: InputDecoration(hintText: "Destination"),
                 ),
                 TextField(),
                 FutureProvider<Set<Polyline>>(create: (_) {
@@ -142,6 +151,7 @@ class _ConfirmRidePageState extends State<ConfirmRidePage> {
           elevation: 20,
           backgroundColor: Colors.white,
           onPressed: () {
+            //TODO MAKE CALL TO FIREBASE
             _scaffoldState.currentState.showSnackBar(
                 new SnackBar(content: new Text("Ride has been ordered")));
             Future.delayed(const Duration(milliseconds: 1000), () {
@@ -181,29 +191,6 @@ class _ConfirmRidePageState extends State<ConfirmRidePage> {
     });
   }
 
-//  setPolylines() async {
-//    List<PointLatLng> result = await polylinePoints?.getRouteBetweenCoordinates(
-//        googleAPIKey,
-//        source_location.latitude,
-//        source_location.longitude,
-//        dest_location.latitude,
-//        dest_location.longitude);
-//    if (result.isNotEmpty) {
-//      result.forEach((PointLatLng point) {
-//        polylineCoordinates.add(LatLng(point.latitude, point.longitude));
-//      });
-//    }
-//    setState(() {
-//      Polyline polyline = Polyline(
-//          polylineId: PolylineId('poly'),
-//          color: Theme.of(context).primaryColor,
-//          points: polylineCoordinates);
-//
-//      _polylines.add(polyline);
-//      _setMapFitToTour(_polylines);
-//    });
-//  }
-
   void _setMapFitToTour(Set<Polyline> p) {
     if (p.isEmpty || mapController == null) {
       return;
@@ -223,8 +210,18 @@ class _ConfirmRidePageState extends State<ConfirmRidePage> {
 
     mapController.moveCamera(CameraUpdate.newLatLngBounds(
         LatLngBounds(
-            southwest: LatLng(minLat - 50, minLong - 50),
-            northeast: LatLng(maxLat + 50, maxLong + 50)),
+            southwest: LatLng(minLat - .02, minLong - .02),
+            northeast: LatLng(maxLat + .02, maxLong + .02)),
         20));
+  }
+
+  String placemarkToAddress(Placemark address) {
+    return address.name +
+        ", " +
+        address.thoroughfare +
+        ", " +
+        address.country +
+        ", " +
+        address.postalCode;
   }
 }
