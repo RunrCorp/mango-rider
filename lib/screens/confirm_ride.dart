@@ -70,6 +70,7 @@ class _ConfirmRidePageState extends State<ConfirmRidePage> {
         ImageConfiguration(devicePixelRatio: 2.5),
         'assets/destination_map_marker.png');
   }
+  //to push
 
   Widget build(BuildContext context) {
     CameraPosition initialLocation = CameraPosition(
