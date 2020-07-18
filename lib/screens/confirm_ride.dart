@@ -6,6 +6,7 @@ import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geocoder/model.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:mango/models/rider_offer.dart';
 import 'package:mango/services/geolocation_service.dart';
 import 'package:provider/provider.dart';
 
@@ -49,20 +50,23 @@ class _ConfirmRidePageState extends State<ConfirmRidePage> {
   final GlobalKey<ScaffoldState> _scaffoldState =
       new GlobalKey<ScaffoldState>();
 
-  String confirmLocation;
+  String confirmSource;
   String confirmDestination;
-  String price;
-  TextEditingController _textControllerOne =
+  double price;
+  TextEditingController _textControllerSource =
       new TextEditingController(text: 'Initial value');
-  TextEditingController _textControllerTwo =
+  TextEditingController _textControllerDestination =
+      new TextEditingController(text: 'Initial value');
+  TextEditingController _textControllerPrice =
       new TextEditingController(text: 'Initial value');
 
   void initState() {
     print('initializing state');
     super.initState();
     setSourceAndDestinationIcons();
-    _textControllerOne = new TextEditingController(text: 'Initial value');
-    _textControllerTwo = new TextEditingController(text: 'Initial value');
+    _textControllerSource = new TextEditingController(text: 'Initial value');
+    _textControllerDestination = new TextEditingController(text: 'Initial value');
+    _textControllerPrice = new TextEditingController(text: 'Initial value');
   }
 
   void setSourceAndDestinationIcons() async {
@@ -71,6 +75,21 @@ class _ConfirmRidePageState extends State<ConfirmRidePage> {
     destinationIcon = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(devicePixelRatio: 2.5),
         'assets/destination_map_marker.png');
+  }
+
+  void userConfirmRide() async {
+    confirmSource = _textControllerSource.text;
+    confirmDestination = _textControllerDestination.text;
+    price = double.parse(_textControllerPrice.text);
+    
+    //RiderOffer userInitialOffer = RiderOffer(price: price, )
+
+    _scaffoldState.currentState
+        .showSnackBar(new SnackBar(content: new Text("Ride has been ordered")));
+    Future.delayed(const Duration(milliseconds: 1000), () {
+      Navigator.of(context).pop();
+    });
+    //Navigator.of(context).pop();
   }
 
   Widget build(BuildContext context) {
@@ -105,15 +124,16 @@ class _ConfirmRidePageState extends State<ConfirmRidePage> {
             return Column(
               children: [
                 TextField(
-                  controller: _textControllerOne,
+                  controller: _textControllerSource,
                   decoration: InputDecoration(hintText: "Starting Location"),
                 ),
                 TextField(
-                  controller: _textControllerTwo,
+                  controller: _textControllerDestination,
                   decoration: InputDecoration(hintText: "Destination"),
                 ),
                 TextField(
-                  decoration: InputDecoration(hintText: "Enter price"),
+                  controller: _textControllerPrice,
+                  decoration: InputDecoration(hintText: "Initial Offer Price"),
                 ),
                 FutureProvider<Set<Polyline>>(create: (_) {
                   print('CALLING FUTURE');
@@ -150,15 +170,7 @@ class _ConfirmRidePageState extends State<ConfirmRidePage> {
           child: Icon(Icons.check, color: Theme.of(context).primaryColor),
           elevation: 20,
           backgroundColor: Colors.white,
-          onPressed: () {
-            //TODO MAKE CALL TO FIREBASE
-            _scaffoldState.currentState.showSnackBar(
-                new SnackBar(content: new Text("Ride has been ordered")));
-            Future.delayed(const Duration(milliseconds: 1000), () {
-              Navigator.of(context).pop();
-            });
-            //Navigator.of(context).pop();
-          },
+          onPressed: userConfirmRide,
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
