@@ -113,7 +113,7 @@ class _ConfirmRidePageState extends State<ConfirmRidePage> {
                   decoration: InputDecoration(hintText: "Destination"),
                 ),
                 TextField(
-
+                  decoration: InputDecoration(hintText: "Enter price"),
                 ),
                 FutureProvider<Set<Polyline>>(create: (_) {
                   print('CALLING FUTURE');
