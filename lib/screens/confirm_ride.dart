@@ -210,9 +210,9 @@ class _ConfirmRidePageState extends State<ConfirmRidePage> {
 
     mapController.moveCamera(CameraUpdate.newLatLngBounds(
         LatLngBounds(
-            southwest: LatLng(minLat - .02, minLong - .02),
-            northeast: LatLng(maxLat + .02, maxLong + .02)),
-        20));
+            southwest: LatLng(minLat, minLong),
+            northeast: LatLng(maxLat, maxLong)),
+        25));
   }
 
   String placemarkToAddress(Placemark address) {
