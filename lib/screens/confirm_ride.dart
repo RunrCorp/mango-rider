@@ -217,18 +217,25 @@ class _ConfirmRidePageState extends State<ConfirmRidePage> {
 
   String placemarkToString(Placemark address) {
     return address.name +
-        ", " +
+        " " +
         address.thoroughfare +
         ", " +
+        address.locality +
+        ", " +
         // address.country +
-        //", " +
-        address.postalCode;
+        address.administrativeArea;
+//        Address dest = Address(
+//          coordinates: Coordinates(address.position.latitude, address.position.longitude)
+//        );
+//        ", " +
+//        address.postalCode;
   }
 
   String addressToString(Address address) {
     return //address. +
         //", " +
-        address.thoroughfare +
+        address.addressLine +
+            address.thoroughfare +
             ", " +
             address.locality +
             ", " +
