@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:mango/screens/account_screen.dart';
 import 'package:settings_ui/settings_ui.dart';
 
 import 'languages_screen.dart';
@@ -43,7 +44,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   leading: Icon(Icons.account_circle),
                   onTap: () {
                     Navigator.of(context).push(MaterialPageRoute(
-                        builder: (BuildContext context) => LanguagesScreen()));
+                        builder: (BuildContext context) => AccountScreen()));
                   }),
             ],
           ),
