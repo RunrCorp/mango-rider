@@ -47,20 +47,23 @@ class _ConfirmRidePageState extends State<ConfirmRidePage> {
   final GlobalKey<ScaffoldState> _scaffoldState =
       new GlobalKey<ScaffoldState>();
 
-  String confirmLocation;
+  String confirmSource;
   String confirmDestination;
-  String price;
-  TextEditingController _textControllerOne =
+  double price;
+  TextEditingController _textControllerSource =
       new TextEditingController(text: 'Initial value');
-  TextEditingController _textControllerTwo =
+  TextEditingController _textControllerDestination =
+      new TextEditingController(text: 'Initial value');
+  TextEditingController _textControllerPrice =
       new TextEditingController(text: 'Initial value');
 
   void initState() {
     print('initializing state');
     super.initState();
     setSourceAndDestinationIcons();
-    _textControllerOne = new TextEditingController(text: 'Initial value');
-    _textControllerTwo = new TextEditingController(text: 'Initial value');
+    _textControllerSource = new TextEditingController(text: 'Initial value');
+    _textControllerDestination = new TextEditingController(text: 'Initial value');
+    _textControllerPrice = new TextEditingController(text: 'Initial value');
   }
 
   void setSourceAndDestinationIcons() async {
@@ -70,7 +73,20 @@ class _ConfirmRidePageState extends State<ConfirmRidePage> {
         ImageConfiguration(devicePixelRatio: 2.5),
         'assets/destination_map_marker.png');
   }
-  //to push
+
+  void userConfirmRide() {
+    //TODO MAKE CALL TO FIREBASE
+    confirmSource = _textControllerSource.text;
+    confirmDestination = _textControllerDestination.text;
+    price = double.parse(_textControllerPrice.text);
+    
+    _scaffoldState.currentState
+        .showSnackBar(new SnackBar(content: new Text("Ride has been ordered")));
+    Future.delayed(const Duration(milliseconds: 1000), () {
+      Navigator.of(context).pop();
+    });
+    //Navigator.of(context).pop();
+  }
 
   Widget build(BuildContext context) {
     CameraPosition initialLocation = CameraPosition(
@@ -96,11 +112,11 @@ class _ConfirmRidePageState extends State<ConfirmRidePage> {
           builder: (_, value, __) {
             Placemark startingAddress = (value != null) ? value[0] : null;
             Placemark endingAddress = (value != null) ? value[1] : null;
-            _textControllerOne = TextEditingController(
+            _textControllerSource = TextEditingController(
                 text: (startingAddress == null)
                     ? ""
                     : placemarkToAddress(startingAddress));
-            _textControllerTwo = TextEditingController(
+            _textControllerDestination = TextEditingController(
                 text: (endingAddress == null)
                     ? ""
                     : placemarkToAddress(endingAddress));
@@ -108,14 +124,17 @@ class _ConfirmRidePageState extends State<ConfirmRidePage> {
             return Column(
               children: [
                 TextField(
-                  controller: _textControllerOne,
+                  controller: _textControllerSource,
                   decoration: InputDecoration(hintText: "Starting Location"),
                 ),
                 TextField(
-                  controller: _textControllerTwo,
+                  controller: _textControllerDestination,
                   decoration: InputDecoration(hintText: "Destination"),
                 ),
-                TextField(),
+                TextField(
+                  controller: _textControllerPrice,
+                  decoration: InputDecoration(hintText: "Initial Offer Price"),
+                ),
                 FutureProvider<Set<Polyline>>(create: (_) {
                   print('CALLING FUTURE');
                   return geoLocatorService.setPolylines(
@@ -151,15 +170,7 @@ class _ConfirmRidePageState extends State<ConfirmRidePage> {
           child: Icon(Icons.check, color: Theme.of(context).primaryColor),
           elevation: 20,
           backgroundColor: Colors.white,
-          onPressed: () {
-            //TODO MAKE CALL TO FIREBASE
-            _scaffoldState.currentState.showSnackBar(
-                new SnackBar(content: new Text("Ride has been ordered")));
-            Future.delayed(const Duration(milliseconds: 1000), () {
-              Navigator.of(context).pop();
-            });
-            //Navigator.of(context).pop();
-          },
+          onPressed: userConfirmRide,
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
