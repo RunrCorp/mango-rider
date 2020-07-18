@@ -22,16 +22,16 @@ class GeoLocatorService {
         position.latitude, position.longitude);
   }
 
-  Future<List<Placemark>> getTwoAddresses(
-      Position positionOne, Position positionTwo) async {
-    List<Placemark> firstAddress = await geo.placemarkFromCoordinates(
-        positionOne.latitude, positionOne.longitude);
-    Placemark address = firstAddress[0];
-    List<Placemark> secondAddress = await geo.placemarkFromCoordinates(
-        positionTwo.latitude, positionTwo.longitude);
-    Placemark destination = secondAddress[0];
-    return [address, destination];
-  }
+//  Future<List<Placemark>> getTwoAddresses(
+//      Position positionOne, Position positionTwo) async {
+//    List<Placemark> firstAddress = await geo.placemarkFromCoordinates(
+//        positionOne.latitude, positionOne.longitude);
+//    Placemark address = firstAddress[0];
+//    List<Placemark> secondAddress = await geo.placemarkFromCoordinates(
+//        positionTwo.latitude, positionTwo.longitude);
+//    Placemark destination = secondAddress[0];
+//    return [address, destination];
+//  }
 
   Stream<Position> trackLocation() {
     return geo.getPositionStream(
