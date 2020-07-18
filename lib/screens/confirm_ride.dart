@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:mango/models/rider_offer.dart';
 import 'package:mango/services/geolocation_service.dart';
 import 'package:provider/provider.dart';
 
@@ -74,12 +75,13 @@ class _ConfirmRidePageState extends State<ConfirmRidePage> {
         'assets/destination_map_marker.png');
   }
 
-  void userConfirmRide() {
-    //TODO MAKE CALL TO FIREBASE
+  void userConfirmRide() async {
     confirmSource = _textControllerSource.text;
     confirmDestination = _textControllerDestination.text;
     price = double.parse(_textControllerPrice.text);
     
+    //RiderOffer userInitialOffer = RiderOffer(price: price, )
+
     _scaffoldState.currentState
         .showSnackBar(new SnackBar(content: new Text("Ride has been ordered")));
     Future.delayed(const Duration(milliseconds: 1000), () {
