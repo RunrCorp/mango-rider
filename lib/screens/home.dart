@@ -319,12 +319,13 @@ class HomePage extends StatelessWidget {
       double lng = detail.result.geometry.location.lng;
 
       var address = await Geocoder.local.findAddressesFromQuery(p.description);
+      print("got address");
 
       Navigator.push(
           context,
           MaterialPageRoute(
               builder: (context) =>
-                  ConfirmRidePage(source_location, lat, lng)));
+                  ConfirmRidePage(source_location, lat, lng, address[0])));
       print(address);
       print("/n");
       print(lat);

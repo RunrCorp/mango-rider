@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+import 'package:geocoder/model.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mango/models/rider_offer.dart';
@@ -18,11 +19,12 @@ const double CAMERA_BEARING = 30;
 class ConfirmRidePage extends StatefulWidget {
   num endLat;
   num endLong;
+  Address endingAddress;
   LatLng source_location; //= LatLng(42.7477863, -71.1699932);
   LatLng dest_location;
 
   ConfirmRidePage(@required original_location, @required this.endLat,
-      @required this.endLong) {
+      @required this.endLong, this.endingAddress) {
     source_location = original_location;
     dest_location = LatLng(endLat, endLong);
     print(source_location);
@@ -102,26 +104,22 @@ class _ConfirmRidePageState extends State<ConfirmRidePage> {
       appBar: new AppBar(
         title: Text("Confirm Ride"),
       ),
-      body: FutureProvider(
-        create: (_) => geoLocatorService.getTwoAddresses(
-            Position(
-                latitude: widget.source_location.latitude,
-                longitude: widget.source_location.longitude),
-            Position(
-                latitude: widget.dest_location.latitude,
-                longitude: widget.dest_location.longitude)),
+      body: FutureProvider<List<Placemark>>(
+        create: (_) => geoLocatorService.getAddress(
+          Position(
+              latitude: widget.source_location.latitude,
+              longitude: widget.source_location.longitude),
+        ),
         child: Consumer<List<Placemark>>(
           builder: (_, value, __) {
             Placemark startingAddress = (value != null) ? value[0] : null;
-            Placemark endingAddress = (value != null) ? value[1] : null;
-            _textControllerSource = TextEditingController(
+            //Placemark endingAddress = (value != null) ? value[1] : null;
+            _textControllerOne = TextEditingController(
                 text: (startingAddress == null)
                     ? ""
-                    : placemarkToAddress(startingAddress));
-            _textControllerDestination = TextEditingController(
-                text: (endingAddress == null)
-                    ? ""
-                    : placemarkToAddress(endingAddress));
+                    : placemarkToString(startingAddress));
+            _textControllerTwo = TextEditingController(
+                text: addressToString(widget.endingAddress));
 
             return Column(
               children: [
@@ -229,13 +227,30 @@ class _ConfirmRidePageState extends State<ConfirmRidePage> {
         25));
   }
 
-  String placemarkToAddress(Placemark address) {
+  String placemarkToString(Placemark address) {
     return address.name +
-        ", " +
+        " " +
         address.thoroughfare +
         ", " +
-        address.country +
+        address.locality +
         ", " +
-        address.postalCode;
+        // address.country +
+        address.administrativeArea;
+//        Address dest = Address(
+//          coordinates: Coordinates(address.position.latitude, address.position.longitude)
+//        );
+//        ", " +
+//        address.postalCode;
+  }
+
+  String addressToString(Address address) {
+    return //address. +
+        //", " +
+        address.addressLine +
+            address.thoroughfare +
+            ", " +
+            address.locality +
+            ", " +
+            address.postalCode;
   }
 }
