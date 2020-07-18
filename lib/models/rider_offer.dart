@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class RiderOffer {
   double price;
@@ -12,8 +11,10 @@ class RiderOffer {
 
   RiderOffer(
       {@required this.price,
+      @required this.destination,
       @required this.destinationLat,
       @required this.destinationLng,
+      @required this.source,
       @required this.sourceLat,
       @required this.sourceLng});
 
@@ -27,7 +28,7 @@ class RiderOffer {
     sourceLng = parsedJson['sourceLng'];
   }
 
-  Map<String, dynamic> offerToJson() {
+  Map<String, dynamic> toJson() {
     return {
       "price": price,
       "destination" : destination,
