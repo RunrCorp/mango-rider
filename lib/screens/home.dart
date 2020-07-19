@@ -239,7 +239,12 @@ class HomePage extends StatelessWidget {
                   Prediction p = await PlacesAutocomplete.show(
                     context: context,
                     apiKey: FlutterConfig.get('GOOGLE_MAPS_API_KEY'),
-                    radius: 10000000,
+                    mode: Mode.overlay,
+                    hint: "Destination",
+                    location: Location(currentLocation.latitude, currentLocation.longitude),
+                    radius: 30000,
+                    language: "us",
+                    components: [new Component(Component.country, "us")],
                     onError: (response) => print(response.errorMessage),
                   );
                   print(
@@ -317,7 +322,8 @@ class HomePage extends StatelessWidget {
       var placeId = p.placeId;
       double lat = detail.result.geometry.location.lat;
       double lng = detail.result.geometry.location.lng;
-
+      print("p.description");
+      print(p.description);
       var address = await Geocoder.local.findAddressesFromQuery(p.description);
       print("got address");
 

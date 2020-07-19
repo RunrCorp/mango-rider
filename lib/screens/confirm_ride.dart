@@ -239,30 +239,31 @@ class _ConfirmRidePageState extends State<ConfirmRidePage> {
         25));
   }
 
-  String placemarkToString(Placemark address) {
-    return address.name +
+  String placemarkToString(Placemark placemark) {
+    if (placemark.thoroughfare == "") {
+      return placemark.name +
+          ", " +
+          placemark.locality +
+          ", " +
+          placemark.administrativeArea;
+    } else {
+      return placemark.name +
+          " " +
+          placemark.thoroughfare +
+          ", " +
+          placemark.locality +
+          ", " +
+          placemark.administrativeArea;
+    }
+  }
+
+  String addressToString(Address address) {
+    return address.featureName +
         " " +
         address.thoroughfare +
         ", " +
         address.locality +
         ", " +
-        // address.country +
-        address.administrativeArea;
-//        Address dest = Address(
-//          coordinates: Coordinates(address.position.latitude, address.position.longitude)
-//        );
-//        ", " +
-//        address.postalCode;
-  }
-
-  String addressToString(Address address) {
-    return //address. +
-        //", " +
-        address.addressLine +
-            address.thoroughfare +
-            ", " +
-            address.locality +
-            ", " +
-            address.postalCode;
+        address.adminArea;
   }
 }
