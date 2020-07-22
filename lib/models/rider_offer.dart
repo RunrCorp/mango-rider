@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:geoflutterfire/geoflutterfire.dart';
 
 class RiderOffer {
   double price;
@@ -8,6 +9,7 @@ class RiderOffer {
   String source;
   double sourceLat;
   double sourceLng;
+  GeoFirePoint myLocation;
 
   RiderOffer(
       {@required this.price,
@@ -16,7 +18,10 @@ class RiderOffer {
       @required this.destinationLng,
       @required this.source,
       @required this.sourceLat,
-      @required this.sourceLng});
+      @required this.sourceLng}) {
+    Geoflutterfire geo = Geoflutterfire();
+    myLocation = geo.point(latitude: this.sourceLat, longitude: this.sourceLng);
+  }
 
   RiderOffer.fronJson(Map<String, dynamic> parsedJson) {
     price = parsedJson['price'];
@@ -26,17 +31,20 @@ class RiderOffer {
     source = parsedJson['source'];
     sourceLat = parsedJson['sourceLat'];
     sourceLng = parsedJson['sourceLng'];
+    //Geoflutterfire geo = Geoflutterfire();
+    myLocation = parsedJson["geohash"];
   }
 
   Map<String, dynamic> toJson() {
     return {
       "price": price,
-      "destination" : destination,
+      "destination": destination,
       "destinationLat": destinationLat,
       "destinationLng": destinationLng,
-      "source" : source,
+      "source": source,
       "sourceLat": sourceLat,
       "sourceLng": sourceLng,
+      "geohash": myLocation.data,
     };
   }
 }
