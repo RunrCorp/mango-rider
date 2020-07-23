@@ -114,11 +114,11 @@ class _ConfirmRidePageState extends State<ConfirmRidePage> {
           builder: (_, value, __) {
             Placemark startingAddress = (value != null) ? value[0] : null;
             //Placemark endingAddress = (value != null) ? value[1] : null;
-            _textControllerOne = TextEditingController(
+            _textControllerSource = TextEditingController(
                 text: (startingAddress == null)
                     ? ""
                     : placemarkToString(startingAddress));
-            _textControllerTwo = TextEditingController(
+            _textControllerDestination = TextEditingController(
                 text: addressToString(widget.endingAddress));
 
             return Column(

@@ -23,6 +23,8 @@ class HomePage extends StatelessWidget {
   final FirebaseUser _user;
 
   HomePage(this._user);
+  //need to make the whole thing stateful to start working on this & padding
+  //GlobalKey heightKey = GlobalKey();
 
   GoogleMapController mapController;
   GoogleMapsPlaces _places = GoogleMapsPlaces(
@@ -271,6 +273,10 @@ class HomePage extends StatelessWidget {
         ),
         body: (currentLocation != null)
             ? GoogleMap(
+                //has to be stateful to work, necesary to make the map work.
+//                onMapCreated: (_){
+//                  setState(() {});
+//                },
                 onTap: (_) {
                   FocusScope.of(context).unfocus();
                   if (_panelController.isPanelOpen) {
@@ -278,6 +284,8 @@ class HomePage extends StatelessWidget {
                   }
                 },
                 zoomControlsEnabled: true,
+                myLocationEnabled: true,
+                compassEnabled: true,
                 myLocationButtonEnabled: true,
                 markers: _markers,
                 onMapCreated: _onMapCreated,
@@ -285,6 +293,7 @@ class HomePage extends StatelessWidget {
                   target: _center,
                   zoom: 15.0,
                 ),
+                padding: EdgeInsets.fromLTRB(0, 0, 0, 200) + MediaQuery.of(context).padding,
               )
             : Center(
                 child: Stack(children: [
