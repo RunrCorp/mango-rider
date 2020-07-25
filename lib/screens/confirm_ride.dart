@@ -236,7 +236,7 @@ class _ConfirmRidePageState extends State<ConfirmRidePage> {
         LatLngBounds(
             southwest: LatLng(minLat, minLong),
             northeast: LatLng(maxLat, maxLong)),
-        25));
+        30));
   }
 
   String placemarkToString(Placemark placemark) {

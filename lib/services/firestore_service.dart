@@ -6,10 +6,12 @@ class FirestoreService {
   Firestore _db = Firestore.instance;
 
   Future<void> addRiderOffer(RiderOffer initialOffer) async {
+    print("adding offer");
     final HttpsCallable callable = CloudFunctions.instance.getHttpsCallable(
       functionName: 'addRiderOffer',
     );
     dynamic resp = await callable.call(initialOffer.toJson());
+    print("print response:");
     print(resp);
     print(resp.runtimeType);
   }
