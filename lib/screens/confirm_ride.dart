@@ -40,7 +40,7 @@ class _ConfirmRidePageState extends State<ConfirmRidePage> {
   Completer<GoogleMapController> _controller = Completer();
   GoogleMapController mapController;
   Set<Marker> _markers = {};
-  Set<Polyline> _polylines = {};
+  //Set<Polyline> _polylines = {};
   List<LatLng> polylineCoordinates = [];
   PolylinePoints polylinePoints = PolylinePoints();
 
@@ -236,7 +236,7 @@ class _ConfirmRidePageState extends State<ConfirmRidePage> {
         LatLngBounds(
             southwest: LatLng(minLat, minLong),
             northeast: LatLng(maxLat, maxLong)),
-        30));
+        45));
   }
 
   String placemarkToString(Placemark placemark) {
