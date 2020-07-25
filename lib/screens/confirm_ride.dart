@@ -65,7 +65,8 @@ class _ConfirmRidePageState extends State<ConfirmRidePage> {
     super.initState();
     setSourceAndDestinationIcons();
     _textControllerSource = new TextEditingController(text: 'Initial value');
-    _textControllerDestination = new TextEditingController(text: 'Initial value');
+    _textControllerDestination =
+        new TextEditingController(text: 'Initial value');
     _textControllerPrice = new TextEditingController(text: 'Initial value');
   }
 
@@ -81,7 +82,7 @@ class _ConfirmRidePageState extends State<ConfirmRidePage> {
     confirmSource = _textControllerSource.text;
     confirmDestination = _textControllerDestination.text;
     price = double.parse(_textControllerPrice.text);
-    
+
     //RiderOffer userInitialOffer = RiderOffer(price: price, )
 
     _scaffoldState.currentState
@@ -114,12 +115,12 @@ class _ConfirmRidePageState extends State<ConfirmRidePage> {
           builder: (_, value, __) {
             Placemark startingAddress = (value != null) ? value[0] : null;
             //Placemark endingAddress = (value != null) ? value[1] : null;
-            _textControllerOne = TextEditingController(
-                text: (startingAddress == null)
-                    ? ""
-                    : placemarkToString(startingAddress));
-            _textControllerTwo = TextEditingController(
-                text: addressToString(widget.endingAddress));
+            // _textControllerOne = TextEditingController(
+            //     text: (startingAddress == null)
+            //         ? ""
+            //         : placemarkToString(startingAddress));
+            // _textControllerTwo = TextEditingController(
+            //     text: addressToString(widget.endingAddress));
 
             return Column(
               children: [
