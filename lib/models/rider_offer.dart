@@ -6,8 +6,8 @@ class RiderOffer {
   double destinationLat;
   double destinationLng;
   String source;
-  double sourceLat;
-  double sourceLng;
+  num sourceLat;
+  num sourceLng;
 //  GeoFirePoint myLocation;
 
   RiderOffer(

@@ -94,7 +94,7 @@ class _ConfirmRidePageState extends State<ConfirmRidePage> {
         sourceLat: widget.source_location.latitude,
         sourceLng: widget.source_location.longitude);
 
-    firestoreService.addRiderOffer(userInitialOffer);
+    firestoreService.addRiderOffer(userInitialOffer, context);
 
     _scaffoldState.currentState
         .showSnackBar(new SnackBar(content: new Text("Ride has been ordered")));
