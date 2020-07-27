@@ -37,16 +37,24 @@ class _SettingsPageState extends State<SettingsPage> {
                   title: 'Environment',
                   subtitle: 'Production',
                   leading: Icon(Icons.cloud_queue)),
+              SettingsTile(
+                  title: 'Account Settings',
+                  subtitle: 'Firstname Lastname',
+                  leading: Icon(Icons.account_circle),
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (BuildContext context) => LanguagesScreen()));
+                  }),
             ],
           ),
-          SettingsSection(
-            title: 'Account',
-            tiles: [
-              SettingsTile(title: 'Phone number', leading: Icon(Icons.phone)),
-              SettingsTile(title: 'Email', leading: Icon(Icons.email)),
-              SettingsTile(title: 'Sign out', leading: Icon(Icons.exit_to_app)),
-            ],
-          ),
+          // SettingsSection(
+          //   title: 'Account',
+          //   tiles: [
+          //     SettingsTile(title: 'Phone number', leading: Icon(Icons.phone)),
+          //     SettingsTile(title: 'Email', leading: Icon(Icons.email)),
+          //     SettingsTile(title: 'Sign out', leading: Icon(Icons.exit_to_app)),
+          //   ],
+          // ),
           SettingsSection(
             title: 'Security',
             tiles: [
