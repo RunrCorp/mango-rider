@@ -17,7 +17,7 @@ import 'package:mango/services/geolocation_service.dart';
 import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
-import 'current_offers.dart';
+import 'new_current_offers.dart';
 
 class HomePage extends StatelessWidget {
   final FirebaseUser _user;
