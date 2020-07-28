@@ -138,9 +138,15 @@ class HomePage extends StatelessWidget {
       )
     };
 
-    BorderRadiusGeometry radius = const BorderRadius.only(
+    BorderRadiusGeometry pullupMenuRadius = const BorderRadius.only(
       topLeft: Radius.circular(24.0),
       topRight: Radius.circular(24.0),
+    );
+
+    BorderRadiusGeometry sideMenuRadius = const BorderRadius.only(
+      topLeft: Radius.circular(24.0),
+      bottomLeft: Radius.circular(24.0),
+
     );
     return Scaffold(
       floatingActionButton: new Builder(builder: (context) {
@@ -157,61 +163,83 @@ class HomePage extends StatelessWidget {
             ));
       }),
       floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
-      endDrawer: new Drawer(
-        child: new ListView(
-          children: <Widget>[
-            new UserAccountsDrawerHeader(
-              accountName: new Text(_user.displayName),
-              accountEmail: new Text(_user.email),
-              currentAccountPicture: new GestureDetector(
-                onTap: editPicture,
-                child: new CircleAvatar(
-                  backgroundImage: new NetworkImage(_user.photoUrl),
+      endDrawer: new Container(
+        //change the constant here to change the width of the sliding menu
+        width: MediaQuery.of(context).size.width * .55,
+        decoration: new BoxDecoration(
+          boxShadow: [
+            new BoxShadow(
+              color: Colors.black,
+              spreadRadius: 5,
+              blurRadius: 7,
+              offset: Offset(0, 3),
+            )
+          ]
+        ),
+        child: new ClipRRect(
+          borderRadius: sideMenuRadius,
+          child: new Drawer(
+            elevation: 10,
+            child: new ListView(
+              children: <Widget>[
+                new DrawerHeader(
+                  child: new Row(
+                      children: <Widget>[
+                        new Text(_user.displayName),
+                        new GestureDetector(
+                          onTap: editPicture,
+                          child: new CircleAvatar(
+                            backgroundImage: new NetworkImage(_user.photoUrl),
+                          ),
+                        ),
+                      ]
+                  ),
+                  decoration: new BoxDecoration(
+                    color: Theme.of(context).primaryColor,
+                  ),
                 ),
-              ),
-              decoration: new BoxDecoration(
-                color: Theme.of(context).primaryColor,
-              ),
+                new ListTile(
+                    title: new Text("Past Orders"),
+                    trailing: new Icon(Icons.timelapse),
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      Navigator.of(context).push(new MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              new OrderHistoryPage()));
+                    }),
+                new ListTile(
+                    title: new Text("Current Offers"),
+                    trailing: Badge(
+                      child: Icon(Icons.inbox),
+                      badgeColor: Colors.red,
+                      badgeContent:
+                          Text("3", style: TextStyle(color: Colors.white)),
+                      elevation: 2,
+                      shape: BadgeShape.circle,
+                      position: BadgePosition.topRight(),
+                    ), //new Icon(Icons.inbox),
+                    onTap: () {
+                      Navigator.of(context).push(new MaterialPageRoute(
+                          builder: (BuildContext context) => new OffersPage()));
+                    }),
+                new ListTile(
+                    title: new Text("Settings"),
+                    trailing: new Icon(Icons.settings),
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      Navigator.of(context).push(new MaterialPageRoute(
+                          builder: (BuildContext context) => new SettingsPage()));
+                    })
+                  //"Close" button on the side menu is repetitive
+    //            new Divider(),
+    //            new ListTile(
+    //              title: new Text("Close"),
+    //              trailing: new Icon(Icons.cancel),
+    //              onTap: () => Navigator.of(context).pop(),
+    //            ),
+              ],
             ),
-            new ListTile(
-                title: new Text("Past Orders"),
-                trailing: new Icon(Icons.timelapse),
-                onTap: () {
-                  Navigator.of(context).pop();
-                  Navigator.of(context).push(new MaterialPageRoute(
-                      builder: (BuildContext context) =>
-                          new OrderHistoryPage()));
-                }),
-            new ListTile(
-                title: new Text("Current Offers"),
-                trailing: Badge(
-                  child: Icon(Icons.inbox),
-                  badgeColor: Colors.red,
-                  badgeContent:
-                      Text("3", style: TextStyle(color: Colors.white)),
-                  elevation: 2,
-                  shape: BadgeShape.circle,
-                  position: BadgePosition.topRight(),
-                ), //new Icon(Icons.inbox),
-                onTap: () {
-                  Navigator.of(context).push(new MaterialPageRoute(
-                      builder: (BuildContext context) => new OffersPage()));
-                }),
-            new ListTile(
-                title: new Text("Settings"),
-                trailing: new Icon(Icons.settings),
-                onTap: () {
-                  Navigator.of(context).pop();
-                  Navigator.of(context).push(new MaterialPageRoute(
-                      builder: (BuildContext context) => new SettingsPage()));
-                }),
-            new Divider(),
-            new ListTile(
-              title: new Text("Close"),
-              trailing: new Icon(Icons.cancel),
-              onTap: () => Navigator.of(context).pop(),
-            ),
-          ],
+          ),
         ),
       ),
       body: SlidingUpPanel(
@@ -293,7 +321,7 @@ class HomePage extends StatelessWidget {
                   target: _center,
                   zoom: 15.0,
                 ),
-                padding: EdgeInsets.fromLTRB(0, 0, 0, 200) + MediaQuery.of(context).padding,
+                padding: EdgeInsets.fromLTRB(0, 0, 0, 95) + MediaQuery.of(context).padding,
               )
             : Center(
                 child: Stack(children: [
@@ -310,7 +338,7 @@ class HomePage extends StatelessWidget {
                         width: 100,
                         child: Image.asset("assets/runr_no_circle.png")))
               ])),
-        borderRadius: radius,
+        borderRadius: pullupMenuRadius,
       ),
     );
   }
