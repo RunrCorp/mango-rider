@@ -21,7 +21,7 @@ class ConfirmRidePage extends StatefulWidget {
   num endLat;
   num endLong;
   Address endingAddress;
-  LatLng source_location; //= LatLng(42.7477863, -71.1699932);
+  LatLng source_location; //= LatLng(42.7477863, -71.1699932); topush
   LatLng dest_location;
 
   ConfirmRidePage(@required original_location, @required this.endLat,
