@@ -7,6 +7,7 @@ import 'package:geocoder/model.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mango/models/rider_offer.dart';
+import 'package:mango/services/firestore_service.dart';
 import 'package:mango/services/geolocation_service.dart';
 import 'package:provider/provider.dart';
 
@@ -35,10 +36,10 @@ class ConfirmRidePage extends StatefulWidget {
 }
 
 class _ConfirmRidePageState extends State<ConfirmRidePage> {
+  FirestoreService firestoreService = FirestoreService();
   Completer<GoogleMapController> _controller = Completer();
   GoogleMapController mapController;
   Set<Marker> _markers = {};
-  Set<Polyline> _polylines = {};
   List<LatLng> polylineCoordinates = [];
   PolylinePoints polylinePoints = PolylinePoints();
 
@@ -50,8 +51,8 @@ class _ConfirmRidePageState extends State<ConfirmRidePage> {
   final GlobalKey<ScaffoldState> _scaffoldState =
       new GlobalKey<ScaffoldState>();
 
-  String confirmSource;
-  String confirmDestination;
+  String source;
+  String destination;
   double price;
   TextEditingController _textControllerSource =
       new TextEditingController(text: 'Initial value');
@@ -65,7 +66,8 @@ class _ConfirmRidePageState extends State<ConfirmRidePage> {
     super.initState();
     setSourceAndDestinationIcons();
     _textControllerSource = new TextEditingController(text: 'Initial value');
-    _textControllerDestination = new TextEditingController(text: 'Initial value');
+    _textControllerDestination =
+        new TextEditingController(text: 'Initial value');
     _textControllerPrice = new TextEditingController(text: 'Initial value');
   }
 
@@ -78,15 +80,24 @@ class _ConfirmRidePageState extends State<ConfirmRidePage> {
   }
 
   void userConfirmRide() async {
-    confirmSource = _textControllerSource.text;
-    confirmDestination = _textControllerDestination.text;
+    source = _textControllerSource.text;
+    destination = _textControllerDestination.text;
     price = double.parse(_textControllerPrice.text);
-    
-    //RiderOffer userInitialOffer = RiderOffer(price: price, )
+
+    RiderOffer userInitialOffer = RiderOffer(
+        price: price,
+        destination: destination,
+        destinationLat: widget.dest_location.latitude,
+        destinationLng: widget.dest_location.longitude,
+        source: source,
+        sourceLat: widget.source_location.latitude,
+        sourceLng: widget.source_location.longitude);
+
+    firestoreService.addRiderOffer(userInitialOffer, context);
 
     _scaffoldState.currentState
         .showSnackBar(new SnackBar(content: new Text("Ride has been ordered")));
-    Future.delayed(const Duration(milliseconds: 1000), () {
+    Future.delayed(const Duration(milliseconds: 2000), () {
       Navigator.of(context).pop();
     });
     //Navigator.of(context).pop();
@@ -224,33 +235,34 @@ class _ConfirmRidePageState extends State<ConfirmRidePage> {
         LatLngBounds(
             southwest: LatLng(minLat, minLong),
             northeast: LatLng(maxLat, maxLong)),
-        25));
+        45));
   }
 
-  String placemarkToString(Placemark address) {
-    return address.name +
+  String placemarkToString(Placemark placemark) {
+    if (placemark.thoroughfare == "") {
+      return placemark.name +
+          ", " +
+          placemark.locality +
+          ", " +
+          placemark.administrativeArea;
+    } else {
+      return placemark.name +
+          " " +
+          placemark.thoroughfare +
+          ", " +
+          placemark.locality +
+          ", " +
+          placemark.administrativeArea;
+    }
+  }
+
+  String addressToString(Address address) {
+    return address.featureName +
         " " +
         address.thoroughfare +
         ", " +
         address.locality +
         ", " +
-        // address.country +
-        address.administrativeArea;
-//        Address dest = Address(
-//          coordinates: Coordinates(address.position.latitude, address.position.longitude)
-//        );
-//        ", " +
-//        address.postalCode;
-  }
-
-  String addressToString(Address address) {
-    return //address. +
-        //", " +
-        address.addressLine +
-            address.thoroughfare +
-            ", " +
-            address.locality +
-            ", " +
-            address.postalCode;
+        address.adminArea;
   }
 }
