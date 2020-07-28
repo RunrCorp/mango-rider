@@ -40,7 +40,6 @@ class _ConfirmRidePageState extends State<ConfirmRidePage> {
   Completer<GoogleMapController> _controller = Completer();
   GoogleMapController mapController;
   Set<Marker> _markers = {};
-  //Set<Polyline> _polylines = {};
   List<LatLng> polylineCoordinates = [];
   PolylinePoints polylinePoints = PolylinePoints();
 
