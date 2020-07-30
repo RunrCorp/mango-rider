@@ -55,7 +55,7 @@ git config --local filter.iosgooglemapsapikey.smudge "sed 's/googleMapsAPIKey = 
 git config --local filter.iosgooglemapsapikey.clean "sed 's/googleMapsAPIKey = .*/googleMapsAPIKey = GOOGLE_MAPS_API_KEY/'"
 
 git config --local filter.iosfirebaseios.smudge "sed 's~<!--iosfirebaseios--> <string>.*~<!--iosfirebaseios--> <string>$FIREBASE_IOS</string>~'"
-git config --local filter.iosfirebaseios.clean "sed 's~<!--iosfirebaseios--> <string>.*~<!--iosfirebaseios--> <string>FIREBASE_IO</string>~'"
+git config --local filter.iosfirebaseios.clean "sed 's~<!--iosfirebaseios--> <string>.*~<!--iosfirebaseios--> <string>FIREBASE_IOS</string>~'"
 
 printf "${GREEN}Git config was successfully set.${NC}"
 echo
