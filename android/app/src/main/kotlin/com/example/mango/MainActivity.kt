@@ -1,4 +1,4 @@
-package com.mango.rider.android
+package dev.mango.rider.android
 
 import io.flutter.embedding.android.FlutterActivity
 
