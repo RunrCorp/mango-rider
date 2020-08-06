@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/material.dart';
-import 'package:mango/models/rider_offer.dart';
+import 'package:mango_rider/models/rider_offer.dart';
 
 class FirestoreService {
   Firestore _db = Firestore.instance;

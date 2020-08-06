@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_config/flutter_config.dart'; // flutter_config
-import 'package:mango/screens/home.dart';
-import 'package:mango/screens/login_page.dart';
-import 'package:mango/services/geolocation_service.dart';
+import 'package:mango_rider/screens/home.dart';
+import 'package:mango_rider/screens/login_page.dart';
+import 'package:mango_rider/services/geolocation_service.dart';
 import 'package:provider/provider.dart';
 
 Future<Null> main() async {

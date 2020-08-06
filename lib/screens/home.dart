@@ -9,11 +9,11 @@ import 'package:geocoder/geocoder.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_webservice/places.dart';
-import 'package:mango/models/location.dart';
-import 'package:mango/screens/confirm_ride.dart';
-import 'package:mango/screens/order_history.dart';
-import 'package:mango/screens/settings.dart';
-import 'package:mango/services/geolocation_service.dart';
+import 'package:mango_rider/models/location.dart';
+import 'package:mango_rider/screens/confirm_ride.dart';
+import 'package:mango_rider/screens/order_history.dart';
+import 'package:mango_rider/screens/settings.dart';
+import 'package:mango_rider/services/geolocation_service.dart';
 import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
@@ -243,7 +243,8 @@ class HomePage extends StatelessWidget {
                     apiKey: FlutterConfig.get('GOOGLE_MAPS_API_KEY'),
                     mode: Mode.overlay,
                     hint: "Destination",
-                    location: Location(currentLocation.latitude, currentLocation.longitude),
+                    location: Location(
+                        currentLocation.latitude, currentLocation.longitude),
                     radius: 30000,
                     language: "us",
                     components: [new Component(Component.country, "us")],
@@ -298,7 +299,8 @@ class HomePage extends StatelessWidget {
                   target: _center,
                   zoom: 15.0,
                 ),
-                padding: EdgeInsets.fromLTRB(0, 0, 0, 200) + MediaQuery.of(context).padding,
+                padding: EdgeInsets.fromLTRB(0, 0, 0, 200) +
+                    MediaQuery.of(context).padding,
               )
             : Center(
                 child: Stack(children: [
