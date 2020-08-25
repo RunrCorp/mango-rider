@@ -8,7 +8,7 @@ class FirestoreService {
 
   Future<void> addRiderRequest(
       RiderRequest initialRequest, BuildContext context) async {
-    print("adding offer");
+    print("adding request");
     final HttpsCallable callable = CloudFunctions.instance.getHttpsCallable(
       functionName: 'addRiderRequest',
     );
