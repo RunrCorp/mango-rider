@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:mango_rider/models/pending_offer_db.dart';
 
 class PendingOffer {
   Image picture;
@@ -20,6 +20,17 @@ class PendingOffer {
     @required this.cost,
     this.isExpanded = false,
   });
+
+  PendingOffer.fromPendingOfferDb(PendingOfferDb offer) {
+    picture = Image.network(offer.driverImage);
+    driverName = offer.driverName;
+    rating = 0;
+    vehicleName = "idk subaru maybe";
+    minutesAway = 5; //this is going to be a predicament
+    cost = offer.price;
+
+
+  }
 }
 
 List<PendingOffer> pendingOffers = [
