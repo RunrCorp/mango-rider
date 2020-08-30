@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mango_rider/services/firestore_service.dart';
 import '../models/pending_offer.dart';
 
 class OffersPage extends StatefulWidget {
@@ -7,6 +8,8 @@ class OffersPage extends StatefulWidget {
 }
 
 class _OffersPageState extends State<OffersPage> {
+  FirestoreService firestoreService = FirestoreService();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,7 +68,16 @@ class _OffersPageState extends State<OffersPage> {
                         textColor: Colors.white,
                         color: Colors.green,
                         child: Text("Accept"),
-                        onPressed: () {}),
+                        onPressed: () {
+                          firestoreService.acceptDriverOffer(pendingOffers[index], context);
+                          Scaffold.of(context).showSnackBar(SnackBar(
+                                content: Text(
+                                    "Ride has been accepted and is on the way")));
+                          Future.delayed(const Duration(milliseconds: 1000),
+                              () {
+                            Navigator.of(context).pop();
+                          });
+                        }),
                   ),
                   ButtonTheme(
                     minWidth: screenWidth / 4,
