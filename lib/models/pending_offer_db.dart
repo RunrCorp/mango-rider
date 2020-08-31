@@ -11,11 +11,15 @@ class PendingOfferDb {
   num sourceLng;
   String riderUid;
   String riderName;
-  String riderImage;
+  //String riderImage;
+  //double riderRating;
   Timestamp timestamp;
   String driverUid; //could leave out
   String driverName; //could leave out
-  String driverImage;
+  //String driverImage;
+  //double driverRating;
+  //String vehicleName;
+  //int minutesAway;
   String initialOfferId;
   bool acceptedByDriver; //could leave out
   bool acceptedByRider; //could leave out
@@ -33,25 +37,34 @@ class PendingOfferDb {
       @required this.sourceLng,
       @required this.riderUid,
       @required this.riderName,
-      @required this.riderImage,
+      //@required this.riderImage,
+      //@required this.riderRating,
       @required this.driverName,
-      @required this.driverImage,
+      //@required this.driverImage,
+      //@required this.driverRating;
+      //@required this.vehicleName;
+      //@required this.minutesAway;
       @required this.driverUid,
       @required this.initialOfferId});
 
   PendingOfferDb.fromJson(Map<String, dynamic> data)
       : destination = data["destination"],
         destinationLat = data["destinationLat"],
+        destinationLng = data["destinationLng"],
         price = data["price"],
         source = data["source"],
         sourceLat = data["sourceLat"],
         sourceLng = data["sourceLng"],
         riderUid = data["riderUid"],
         riderName = data["riderName"],
-        riderImage = data["riderImage"],
+        //riderImage = data["riderImage"],
+        //riderRating = data["riderRating"],
         driverUid = data["driverUid"],
         driverName = data["driverName"],
-        driverImage = data["driverImage"],
+        //driverImage = data["driverImage"],
+        //driverRating = data["driverRating"],
+        //vehicleName = data["vehicleName"],
+        //minutesAway = data["minutesAway"],
         timestamp = data["timestamp"],
         initialOfferId = data["initialOfferId"],
         numberOffer = data["numberOffer"];
@@ -67,10 +80,14 @@ class PendingOfferDb {
       "sourceLng": sourceLng,
       "riderUid": riderUid,
       "riderName": riderName,
-      "riderImage": riderImage,
+      //"riderImage": riderImage,
+      //"riderRating": riderRating,
       "driverUid": driverUid,
       "driverName": driverName,
-      "driverImage": driverImage,
+      //"driverImage": driverImage,
+      //"driverRating": driverRating,
+      //"vehicleName": vehicleName,
+      //"minutesAway": minutesAway,
       "initialOfferId": initialOfferId,
     };
   }

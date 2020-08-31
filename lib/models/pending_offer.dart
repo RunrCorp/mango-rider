@@ -22,7 +22,8 @@ class PendingOffer {
   });
 
   PendingOffer.fromPendingOfferDb(PendingOfferDb offer) {
-    picture = Image.network(offer.driverImage);
+    //picture = Image.network(offer.driverImage);
+    picture = Image.asset("assets/bagginso.png");
     driverName = offer.driverName;
     rating = 0;
     vehicleName = "idk subaru maybe";
@@ -33,6 +34,7 @@ class PendingOffer {
   }
 }
 
+/*
 List<PendingOffer> pendingOffers = [
   PendingOffer(
     picture: Image.asset("assets/bagginso.png"),
@@ -99,3 +101,4 @@ List<PendingOffer> pendingOffers = [
     cost: 109.22,
   ),
 ];
+*/
