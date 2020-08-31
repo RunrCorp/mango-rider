@@ -1,20 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/material.dart';
+import 'package:mango_rider/models/rider_request.dart';
 import 'package:mango_rider/models/pending_offer.dart';
 import 'package:mango_rider/models/pending_offer_db.dart';
-import 'package:mango_rider/models/rider_offer.dart';
 
 class FirestoreService {
   Firestore _db = Firestore.instance;
 
-  Future<void> addRiderOffer(
-      RiderOffer initialOffer, BuildContext context) async {
-    print("adding offer");
+  Future<void> addRiderRequest(
+      RiderRequest initialRequest, BuildContext context) async {
+    print("adding request");
     final HttpsCallable callable = CloudFunctions.instance.getHttpsCallable(
-      functionName: 'addRiderOffer',
+      functionName: 'addRiderRequest',
     );
-    callable.call(initialOffer.toJson()).then((resp) {
+    callable.call(initialRequest.toJson()).then((resp) {
       print("print response:");
       print(resp);
       print(resp.runtimeType);

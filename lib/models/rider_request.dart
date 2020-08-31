@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-class RiderOffer {
-  double price;
+class RiderRequest {
   String destination;
   double destinationLat;
   double destinationLng;
@@ -10,9 +9,8 @@ class RiderOffer {
   num sourceLng;
 //  GeoFirePoint myLocation;
 
-  RiderOffer(
-      {@required this.price,
-      @required this.destination,
+  RiderRequest(
+      {@required this.destination,
       @required this.destinationLat,
       @required this.destinationLng,
       @required this.source,
@@ -22,8 +20,7 @@ class RiderOffer {
     //myLocation = geo.point(latitude: this.sourceLat, longitude: this.sourceLng);
   }
 
-  RiderOffer.fromJson(Map<String, dynamic> parsedJson) {
-    price = parsedJson['price'];
+  RiderRequest.fromJson(Map<String, dynamic> parsedJson) {
     destination = parsedJson['destination'];
     destinationLat = parsedJson['destinationLat'];
     destinationLng = parsedJson['destinationLng'];
@@ -36,7 +33,6 @@ class RiderOffer {
 
   Map<String, dynamic> toJson() {
     return {
-      "price": price,
       "destination": destination,
       "destinationLat": destinationLat,
       "destinationLng": destinationLng,
